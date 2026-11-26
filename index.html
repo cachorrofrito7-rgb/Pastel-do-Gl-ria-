@@ -56,7 +56,7 @@
     .promo-banner {
       background: #fffbeb;
       border: 1px dashed var(--accent);
-      margin: 14px 16px;
+      margin: 14px 0;
       padding: 12px;
       border-radius: 10px;
       text-align: center;
@@ -65,14 +65,47 @@
     }
     .promo-banner strong { color: var(--primary); }
 
+    /* Abas separadas (mostra apenas a categoria escolhida) */
+    .tabs-bar {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin: 12px 0 16px;
+    }
+    .tab-btn {
+      background: var(--card);
+      border: 1px solid #e5e7eb;
+      color: var(--text);
+      padding: 11px 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      transition: all 0.15s ease;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 3px 8px rgba(217, 56, 30, 0.25);
+    }
+
     .container { max-width: 600px; margin: 0 auto; padding: 0 16px; }
     .section-title {
       font-size: 17px;
       font-weight: 700;
-      margin: 18px 0 10px;
+      margin: 10px 0 12px;
       display: flex;
       align-items: center;
+      justify-content: space-between;
       gap: 6px;
+    }
+    .section-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
     }
 
     .item-card {
@@ -87,7 +120,16 @@
       gap: 12px;
       border: 1px solid #eef0f2;
     }
-    .item-info { flex: 1; }
+    .item-thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #fef3c7;
+      border: 1px solid #eef0f2;
+    }
+    .item-info { flex: 1; min-width: 0; }
     .tag-destaque {
       display: inline-block;
       background: #fef3c7;
@@ -109,6 +151,7 @@
       background: #f3f4f6;
       padding: 6px 10px;
       border-radius: 10px;
+      flex-shrink: 0;
     }
     .qty-btn {
       width: 28px;
@@ -182,23 +225,26 @@
 <body>
 
   <header>
-    <div class="badge-top">⭐ 5,0 no Google • Delivery Oficial</div>
-    <h1>Pastel do Glória</h1>
-    <p>Pastéis fritos na hora e super recheados em todo o tamanho!</p>
+    <div class="badge-top" id="loja-badge">⭐ 5,0 no Google • Delivery Oficial</div>
+    <h1 id="loja-nome">Pastel do Glória</h1>
+    <p id="loja-slogan">Pastéis fritos na hora, porções crocantes e bebidas geladas!</p>
     <div class="info-pills">
-      <span class="pill">📍 R. Manduca Nunes, 160 - Glória, POA</span>
-      <span class="pill">🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)</span>
+      <span class="pill" id="loja-endereco">📍 R. Manduca Nunes, 160 - Glória, POA</span>
+      <span class="pill" id="loja-horario">🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)</span>
     </div>
   </header>
 
   <div class="container">
     <div class="promo-banner">
       🔥 <strong>Peça direto por aqui sem taxas de aplicativo!</strong><br>
-      Monte seu pedido e envie direto para o nosso WhatsApp.
+      Escolha por aba e envie direto para o nosso WhatsApp.
     </div>
 
-    <div class="section-title">🥟 Pastéis Mais Pedidos (Destaques)</div>
-    <div id="menu-list"></div>
+    <!-- Abas de navegação: mostra apenas a categoria escolhida -->
+    <div class="tabs-bar" id="tabs-bar"></div>
+
+    <!-- Apenas a parte da aba ativa aparece aqui -->
+    <div id="menu-container"></div>
 
     <div class="checkout-box">
       <div class="section-title" style="margin-top: 0;">🛵 Dados para Entrega / Retirada</div>
@@ -208,7 +254,7 @@
       <label for="tipo-entrega">Como deseja receber?</label>
       <select id="tipo-entrega" onchange="toggleEndereco()">
         <option value="Entrega (Delivery)">Entrega (Delivery)</option>
-        <option value="Retirada no Local">Retirada no Local (R. Manduca Nunes, 160)</option>
+        <option value="Retirada no Local" id="opcao-retirada">Retirada no Local (R. Manduca Nunes, 160)</option>
       </select>
 
       <div id="box-endereco">
@@ -223,9 +269,12 @@
         <option value="Cartão de Débito (Maquininha)">Cartão de Débito (Maquininha / NFC)</option>
         <option value="Dinheiro">Dinheiro</option>
       </select>
+
+      <label for="cliente-obs">Observações do Pedido (opcional)</label>
+      <input type="text" id="cliente-obs" placeholder="Ex: Sem cebola, mandar maionese extra...">
     </div>
 
-    <div class="store-footer">
+    <div class="store-footer" id="loja-rodape">
       <strong>Pastel do Glória</strong> • R. Manduca Nunes, 160 - Glória, Porto Alegre - RS<br>
       Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC<br>
       <em>Prévia demonstrativa • Cardápio Digital</em>
@@ -243,58 +292,261 @@
   </div>
 
   <script>
-    const WHATSAPP_LOJA = "5553991312445";
+    // CONFIGURAÇÃO CENTRAL DA LOJA (facilita reutilizar para outros clientes)
+    const LOJA = {
+      nome: "Pastel do Glória",
+      badge: "⭐ 5,0 no Google • Delivery Oficial",
+      slogan: "Pastéis fritos na hora, porções crocantes e bebidas geladas!",
+      whatsapp: "5553991312445",
+      enderecoCurto: "📍 R. Manduca Nunes, 160 - Glória, POA",
+      enderecoCompleto: "R. Manduca Nunes, 160 - Glória, Porto Alegre - RS",
+      horario: "🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)",
+      obsRodape: "Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC",
+      pastaImagens: "img/" // Pasta no Git onde ficarão as fotos (ex: img/camarao-especial.jpg)
+    };
+
+    function criarIconePadrao(emoji) {
+      return "data:image/svg+xml;utf8," + encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+          <rect width="120" height="120" fill="#fef3c7"/>
+          <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="44">${emoji}</text>
+        </svg>
+      `);
+    }
+
+    // Deixe apenas o nome do arquivo em "arquivoImagem" (ou URL completa começando com http/https)
+    function resolverImagem(arquivoImagem, emojiFallback) {
+      const padrao = criarIconePadrao(emojiFallback);
+      if (!arquivoImagem || !arquivoImagem.trim()) return padrao;
+      const limpo = arquivoImagem.trim();
+      if (limpo.startsWith("http://") || limpo.startsWith("https://") || limpo.startsWith("data:")) {
+        return limpo;
+      }
+      const pasta = LOJA.pastaImagens.endsWith("/") ? LOJA.pastaImagens : `${LOJA.pastaImagens}/`;
+      const arquivo = limpo.startsWith("/") ? limpo.slice(1) : limpo;
+      return `${pasta}${arquivo}`;
+    }
+
+    const categorias = [
+      { chave: "salgados", titulo: "🥟 Pastéis Salgados", emoji: "🥟" },
+      { chave: "doces",    titulo: "🍫 Pastéis Doces",    emoji: "🍫" },
+      { chave: "porcoes",  titulo: "🍟 Porções",         emoji: "🍟" },
+      { chave: "bebidas",  titulo: "🥤 Bebidas",         emoji: "🥤" }
+    ];
+
+    let categoriaAtiva = "salgados";
 
     const produtos = [
+      // PASTÉIS SALGADOS
       {
         id: 1,
+        categoria: "salgados",
         nome: "Pastel de Camarão Especial",
-        desc: "O destaque da casa segundo nossos clientes! Camarão bem temperado e cremoso.",
+        desc: "O destaque da casa! Camarão bem temperado, cremoso e recheado da ponta ao meio.",
         preco: 32.00,
-        destaque: "⭐ Mais Elogiado"
+        destaque: "⭐ Mais Elogiado",
+        arquivoImagem: "camarao-especial.jpg"
       },
       {
         id: 2,
+        categoria: "salgados",
         nome: "Carne de Panela com Mussarela e Cheddar",
         desc: "Carne de panela desfiada suculenta com muito queijo mussarela e cheddar derretido.",
         preco: 28.00,
-        destaque: "🔥 Campeão de Vendas"
+        destaque: "🔥 Campeão de Vendas",
+        arquivoImagem: "carne-panela.jpg"
       },
       {
         id: 3,
+        categoria: "salgados",
         nome: "Carne Moída com Queijo e Ovo",
-        desc: "Clássico tradicional muito recheado da ponta até o meio com carne, queijo e ovo picado.",
+        desc: "Clássico tradicional muito recheado com carne temperada, mussarela e ovo picado.",
         preco: 24.00,
-        destaque: "Tradicional"
+        destaque: "Tradicional",
+        arquivoImagem: "carne-moida-queijo-ovo.jpg"
       },
       {
         id: 4,
-        nome: "Calabresa com Cheddar",
-        desc: "Calabresa fatiada frita na hora com camada generosa de cheddar cremoso.",
-        preco: 24.00,
-        destaque: ""
+        categoria: "salgados",
+        nome: "Frango Cremoso com Catupiry",
+        desc: "Peito de frango desfiado temperado na casa com camada generosa de Catupiry.",
+        preco: 25.00,
+        destaque: "",
+        arquivoImagem: "frango-catupiry.jpg"
       },
       {
         id: 5,
-        nome: "Pastel Doce: Nutella com Banana",
+        categoria: "salgados",
+        nome: "Calabresa com Cheddar",
+        desc: "Calabresa fatiada frita na hora com cheddar cremoso.",
+        preco: 24.00,
+        destaque: "",
+        arquivoImagem: "calabresa-cheddar.jpg"
+      },
+      {
+        id: 6,
+        categoria: "salgados",
+        nome: "Quatro Queijos",
+        desc: "Mussarela, provolone, parmesão e requeijão cremoso derretidos na hora.",
+        preco: 25.00,
+        destaque: "",
+        arquivoImagem: "quatro-queijos.jpg"
+      },
+
+      // PASTÉIS DOCES
+      {
+        id: 7,
+        categoria: "doces",
+        nome: "Nutella com Banana",
         desc: "Massa crocante recheada com creme de avelã Nutella original e rodelas de banana.",
         preco: 26.00,
-        destaque: "🍫 Sobremesa"
+        destaque: "🍫 Favorito",
+        arquivoImagem: "nutella-banana.jpg"
+      },
+      {
+        id: 8,
+        categoria: "doces",
+        nome: "Chocolate Preto com Morango",
+        desc: "Chocolate ao leite derretido com morangos frescos picados.",
+        preco: 26.00,
+        destaque: "",
+        arquivoImagem: "chocolate-morango.jpg"
+      },
+      {
+        id: 9,
+        categoria: "doces",
+        nome: "Romeu e Julieta",
+        desc: "Goiabada cremosa derretida com queijo mussarela.",
+        preco: 22.00,
+        destaque: "",
+        arquivoImagem: "romeu-julieta.jpg"
+      },
+
+      // PORÇÕES
+      {
+        id: 10,
+        categoria: "porcoes",
+        nome: "Porção de Batata Frita Crocante (400g)",
+        desc: "Batatas sequinhas e crocantes acompanhadas de molho da casa.",
+        preco: 22.00,
+        destaque: "",
+        arquivoImagem: "batata-frita.jpg"
+      },
+      {
+        id: 11,
+        categoria: "porcoes",
+        nome: "Batata Frita com Cheddar e Bacon (450g)",
+        desc: "Porção generosa coberta com cheddar cremoso e cubos de bacon crocante.",
+        preco: 29.00,
+        destaque: "🔥 Para Compartilhar",
+        arquivoImagem: "batata-cheddar-bacon.jpg"
+      },
+      {
+        id: 12,
+        categoria: "porcoes",
+        nome: "Porção de Mini Pastéis Mistos (12 unid.)",
+        desc: "Mix de mini pastéis de carne, queijo e frango fritos na hora.",
+        preco: 28.00,
+        destaque: "",
+        arquivoImagem: "mini-pasteis.jpg"
+      },
+
+      // BEBIDAS
+      {
+        id: 13,
+        categoria: "bebidas",
+        nome: "Coca-Cola Lata 350ml",
+        desc: "Bem gelada (Original ou Zero).",
+        preco: 6.50,
+        destaque: "",
+        arquivoImagem: "coca-lata.jpg"
+      },
+      {
+        id: 14,
+        categoria: "bebidas",
+        nome: "Guaraná Antarctica Lata 350ml",
+        desc: "Bem gelado.",
+        preco: 6.00,
+        destaque: "",
+        arquivoImagem: "guarana-lata.jpg"
+      },
+      {
+        id: 15,
+        categoria: "bebidas",
+        nome: "Refrigerante 2 Litros",
+        desc: "Coca-Cola ou Guaraná Antarctica (informe o sabor nas observações).",
+        preco: 14.00,
+        destaque: "Ideal para Família",
+        arquivoImagem: "refri-2l.jpg"
+      },
+      {
+        id: 16,
+        categoria: "bebidas",
+        nome: "Água Mineral 500ml",
+        desc: "Sem gás ou com gás.",
+        preco: 4.50,
+        destaque: "",
+        arquivoImagem: "agua-500ml.jpg"
       }
     ];
 
     const carrinho = {};
 
+    function aplicarDadosLoja() {
+      document.title = `${LOJA.nome} | Cardápio Digital`;
+      document.getElementById("loja-badge").textContent = LOJA.badge;
+      document.getElementById("loja-nome").textContent = LOJA.nome;
+      document.getElementById("loja-slogan").textContent = LOJA.slogan;
+      document.getElementById("loja-endereco").textContent = LOJA.enderecoCurto;
+      document.getElementById("loja-horario").textContent = LOJA.horario;
+      document.getElementById("opcao-retirada").textContent = `Retirada no Local (${LOJA.enderecoCompleto})`;
+      document.getElementById("loja-rodape").innerHTML = `
+        <strong>${LOJA.nome}</strong> • ${LOJA.enderecoCompleto}<br>
+        ${LOJA.obsRodape}<br>
+        <em>Cardápio Digital</em>
+      `;
+    }
+
     function formatarMoeda(valor) {
       return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
+    function trocarAba(chave) {
+      categoriaAtiva = chave;
+      renderizarAbas();
+      renderizarMenu();
+    }
+
+    function renderizarAbas() {
+      const tabsBar = document.getElementById('tabs-bar');
+      tabsBar.innerHTML = categorias.map(cat => {
+        const ativa = cat.chave === categoriaAtiva ? 'active' : '';
+        return `
+          <button type="button" class="tab-btn ${ativa}" onclick="trocarAba('${cat.chave}')">
+            ${cat.titulo}
+          </button>
+        `;
+      }).join('');
+    }
+
     function renderizarMenu() {
-      const lista = document.getElementById('menu-list');
-      lista.innerHTML = produtos.map(p => {
+      const container = document.getElementById('menu-container');
+      const cat = categorias.find(c => c.chave === categoriaAtiva) || categorias[0];
+      const itensCat = produtos.filter(p => p.categoria === cat.chave);
+      const padrao = criarIconePadrao(cat.emoji);
+
+      const cardsHtml = itensCat.map(p => {
         const qtd = carrinho[p.id] || 0;
+        const srcFoto = resolverImagem(p.arquivoImagem, cat.emoji);
+
         return `
           <div class="item-card">
+            <img
+              class="item-thumb"
+              src="${srcFoto}"
+              alt="${p.nome}"
+              onerror="this.onerror=null;this.src='${padrao}';"
+            >
             <div class="item-info">
               ${p.destaque ? `<span class="tag-destaque">${p.destaque}</span>` : ''}
               <h3>${p.nome}</h3>
@@ -302,13 +554,22 @@
               <div class="price">${formatarMoeda(p.preco)}</div>
             </div>
             <div class="qty-control">
-              <button class="qty-btn minus" onclick="alterarQtd(${p.id}, -1)">-</button>
+              <button type="button" class="qty-btn minus" onclick="alterarQtd(${p.id}, -1)">-</button>
               <span class="qty-val">${qtd}</span>
-              <button class="qty-btn" onclick="alterarQtd(${p.id}, 1)">+</button>
+              <button type="button" class="qty-btn" onclick="alterarQtd(${p.id}, 1)">+</button>
             </div>
           </div>
         `;
       }).join('');
+
+      container.innerHTML = `
+        <div class="section-title">
+          <span>${cat.titulo}</span>
+          <span class="section-count">${itensCat.length} opções</span>
+        </div>
+        ${cardsHtml}
+      `;
+
       atualizarTotal();
     }
 
@@ -339,20 +600,24 @@
       const tipo = document.getElementById('tipo-entrega').value;
       const endereco = document.getElementById('cliente-endereco').value.trim();
       const pagamento = document.getElementById('forma-pagamento').value;
+      const obs = document.getElementById('cliente-obs').value.trim();
 
       if (tipo.includes('Entrega') && !endereco) {
         alert("Por favor, informe o endereço para entrega.");
         return;
       }
 
-      let mensagem = `*NOVO PEDIDO - PASTEL DO GLÓRIA*\n\n`;
+      let mensagem = `*NOVO PEDIDO - ${LOJA.nome.toUpperCase()}*\n\n`;
       mensagem += `*Cliente:* ${nome}\n`;
       mensagem += `*Recebimento:* ${tipo}\n`;
       if (tipo.includes('Entrega')) {
         mensagem += `*Endereço:* ${endereco}\n`;
       }
-      mensagem += `*Pagamento:* ${pagamento}\n\n`;
-      mensagem += `*ITENS DO PEDIDO:*\n`;
+      mensagem += `*Pagamento:* ${pagamento}\n`;
+      if (obs) {
+        mensagem += `*Observações:* ${obs}\n`;
+      }
+      mensagem += `\n*ITENS DO PEDIDO:*\n`;
 
       let total = 0;
       produtos.forEach(p => {
@@ -366,10 +631,12 @@
 
       mensagem += `\n*Total Estimado:* ${formatarMoeda(total)} (+ taxa de entrega, se houver)`;
 
-      const url = `https://wa.me/${WHATSAPP_LOJA}?text=${encodeURIComponent(mensagem)}`;
+      const url = `https://wa.me/${LOJA.whatsapp}?text=${encodeURIComponent(mensagem)}`;
       window.open(url, '_blank');
     }
 
+    aplicarDadosLoja();
+    renderizarAbas();
     renderizarMenu();
   </script>
 </body>
