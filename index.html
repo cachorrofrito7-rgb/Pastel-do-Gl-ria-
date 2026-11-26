@@ -302,7 +302,7 @@
       enderecoCompleto: "R. Manduca Nunes, 160 - Glória, Porto Alegre - RS",
       horario: "🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)",
       obsRodape: "Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC",
-      pastaImagens: "img/" // Pasta no Git onde ficarão as fotos (ex: img/camarao-especial.jpg)
+      pastaImagens: "" // Vazio porque as imagens estão na raiz do repo (ou use "img/" se criar a pasta)
     };
 
     function criarIconePadrao(emoji) {
@@ -322,7 +322,8 @@
       if (limpo.startsWith("http://") || limpo.startsWith("https://") || limpo.startsWith("data:")) {
         return limpo;
       }
-      const pasta = LOJA.pastaImagens.endsWith("") ? LOJA.pastaImagens : `${LOJA.pastaImagens}/`;
+      const pastaBase = LOJA.pastaImagens ? LOJA.pastaImagens.trim() : "";
+      const pasta = !pastaBase || pastaBase.endsWith("/") ? pastaBase : `${pastaBase}/`;
       const arquivo = limpo.startsWith("/") ? limpo.slice(1) : limpo;
       return `${pasta}${arquivo}`;
     }
