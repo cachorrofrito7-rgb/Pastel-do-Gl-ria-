@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pastel do Glória | Cardápio Digital</title>
+  <style>
+    :root {
+      --primary: #d9381e;
+      --primary-dark: #b32912;
+      --accent: #f59e0b;
+      --bg: #f8f9fa;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --whatsapp: #25d366;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 95px; }
+
+    header {
+      background: linear-gradient(135deg, #1f1209 0%, #3d1c0a 100%);
+      color: #fff;
+      padding: 20px 16px;
+      text-align: center;
+      border-bottom: 4px solid var(--accent);
+    }
+    .badge-top {
+      display: inline-block;
+      background: var(--accent);
+      color: #1f1209;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 10px;
+      text-transform: uppercase;
+    }
+    header h1 { font-size: 24px; font-weight: 800; letter-spacing: 0.5px; }
+    header p { font-size: 13px; color: #e5e7eb; margin-top: 6px; }
+    .info-pills {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .pill {
+      background: rgba(255,255,255,0.12);
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    .promo-banner {
+      background: #fffbeb;
+      border: 1px dashed var(--accent);
+      margin: 14px 16px;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 13px;
+      color: #92400e;
+    }
+    .promo-banner strong { color: var(--primary); }
+
+    .container { max-width: 600px; margin: 0 auto; padding: 0 16px; }
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 18px 0 10px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .item-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #eef0f2;
+    }
+    .item-info { flex: 1; }
+    .tag-destaque {
+      display: inline-block;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+    .item-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .item-info p { font-size: 13px; color: var(--muted); line-height: 1.35; margin-bottom: 8px; }
+    .price { font-size: 16px; font-weight: 800; color: var(--primary); }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f3f4f6;
+      padding: 6px 10px;
+      border-radius: 10px;
+    }
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .qty-btn.minus { background: #9ca3af; }
+    .qty-val { font-weight: 700; min-width: 18px; text-align: center; }
+
+    .checkout-box {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .checkout-box label { display: block; font-size: 13px; font-weight: 600; margin: 10px 0 4px; }
+    .checkout-box input, .checkout-box select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .store-footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 24px;
+      line-height: 1.6;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 12px 16px;
+      box-shadow: 0 -3px 12px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+    .total-box span { display: block; font-size: 12px; color: var(--muted); }
+    .total-box strong { font-size: 18px; color: var(--text); }
+    .btn-whats {
+      background: var(--whatsapp);
+      color: #fff;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-whats:disabled { background: #9ca3af; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge-top">⭐ 5,0 no Google • Delivery Oficial</div>
+    <h1>Pastel do Glória</h1>
+    <p>Pastéis fritos na hora e super recheados em todo o tamanho!</p>
+    <div class="info-pills">
+      <span class="pill">📍 R. Manduca Nunes, 160 - Glória, POA</span>
+      <span class="pill">🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="promo-banner">
+      🔥 <strong>Peça direto por aqui sem taxas de aplicativo!</strong><br>
+      Monte seu pedido e envie direto para o nosso WhatsApp.
+    </div>
+
+    <div class="section-title">🥟 Pastéis Mais Pedidos (Destaques)</div>
+    <div id="menu-list"></div>
+
+    <div class="checkout-box">
+      <div class="section-title" style="margin-top: 0;">🛵 Dados para Entrega / Retirada</div>
+      <label for="cliente-nome">Seu Nome</label>
+      <input type="text" id="cliente-nome" placeholder="Ex: João Silva">
+
+      <label for="tipo-entrega">Como deseja receber?</label>
+      <select id="tipo-entrega" onchange="toggleEndereco()">
+        <option value="Entrega (Delivery)">Entrega (Delivery)</option>
+        <option value="Retirada no Local">Retirada no Local (R. Manduca Nunes, 160)</option>
+      </select>
+
+      <div id="box-endereco">
+        <label for="cliente-endereco">Endereço completo e ponto de referência</label>
+        <input type="text" id="cliente-endereco" placeholder="Rua, número, bairro...">
+      </div>
+
+      <label for="forma-pagamento">Forma de Pagamento</label>
+      <select id="forma-pagamento">
+        <option value="Pix">Pix</option>
+        <option value="Cartão de Crédito (Maquininha)">Cartão de Crédito (Maquininha / NFC)</option>
+        <option value="Cartão de Débito (Maquininha)">Cartão de Débito (Maquininha / NFC)</option>
+        <option value="Dinheiro">Dinheiro</option>
+      </select>
+    </div>
+
+    <div class="store-footer">
+      <strong>Pastel do Glória</strong> • R. Manduca Nunes, 160 - Glória, Porto Alegre - RS<br>
+      Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC<br>
+      <em>Prévia demonstrativa • Cardápio Digital</em>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="total-box">
+      <span>Total do Pedido</span>
+      <strong id="total-valor">R$ 0,00</strong>
+    </div>
+    <button class="btn-whats" id="btn-enviar" onclick="enviarWhatsApp()" disabled>
+      Enviar no WhatsApp
+    </button>
+  </div>
+
+  <script>
+    const WHATSAPP_LOJA = "5553991312445";
+
+    const produtos = [
+      {
+        id: 1,
+        nome: "Pastel de Camarão Especial",
+        desc: "O destaque da casa segundo nossos clientes! Camarão bem temperado e cremoso.",
+        preco: 32.00,
+        destaque: "⭐ Mais Elogiado"
+      },
+      {
+        id: 2,
+        nome: "Carne de Panela com Mussarela e Cheddar",
+        desc: "Carne de panela desfiada suculenta com muito queijo mussarela e cheddar derretido.",
+        preco: 28.00,
+        destaque: "🔥 Campeão de Vendas"
+      },
+      {
+        id: 3,
+        nome: "Carne Moída com Queijo e Ovo",
+        desc: "Clássico tradicional muito recheado da ponta até o meio com carne, queijo e ovo picado.",
+        preco: 24.00,
+        destaque: "Tradicional"
+      },
+      {
+        id: 4,
+        nome: "Calabresa com Cheddar",
+        desc: "Calabresa fatiada frita na hora com camada generosa de cheddar cremoso.",
+        preco: 24.00,
+        destaque: ""
+      },
+      {
+        id: 5,
+        nome: "Pastel Doce: Nutella com Banana",
+        desc: "Massa crocante recheada com creme de avelã Nutella original e rodelas de banana.",
+        preco: 26.00,
+        destaque: "🍫 Sobremesa"
+      }
+    ];
+
+    const carrinho = {};
+
+    function formatarMoeda(valor) {
+      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function renderizarMenu() {
+      const lista = document.getElementById('menu-list');
+      lista.innerHTML = produtos.map(p => {
+        const qtd = carrinho[p.id] || 0;
+        return `
+          <div class="item-card">
+            <div class="item-info">
+              ${p.destaque ? `<span class="tag-destaque">${p.destaque}</span>` : ''}
+              <h3>${p.nome}</h3>
+              <p>${p.desc}</p>
+              <div class="price">${formatarMoeda(p.preco)}</div>
+            </div>
+            <div class="qty-control">
+              <button class="qty-btn minus" onclick="alterarQtd(${p.id}, -1)">-</button>
+              <span class="qty-val">${qtd}</span>
+              <button class="qty-btn" onclick="alterarQtd(${p.id}, 1)">+</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+      atualizarTotal();
+    }
+
+    function alterarQtd(id, delta) {
+      carrinho[id] = Math.max(0, (carrinho[id] || 0) + delta);
+      renderizarMenu();
+    }
+
+    function atualizarTotal() {
+      let total = 0;
+      let totalItens = 0;
+      produtos.forEach(p => {
+        const qtd = carrinho[p.id] || 0;
+        total += p.preco * qtd;
+        totalItens += qtd;
+      });
+      document.getElementById('total-valor').innerText = formatarMoeda(total);
+      document.getElementById('btn-enviar').disabled = totalItens === 0;
+    }
+
+    function toggleEndereco() {
+      const tipo = document.getElementById('tipo-entrega').value;
+      document.getElementById('box-endereco').style.display = tipo.includes('Entrega') ? 'block' : 'none';
+    }
+
+    function enviarWhatsApp() {
+      const nome = document.getElementById('cliente-nome').value.trim() || "Cliente";
+      const tipo = document.getElementById('tipo-entrega').value;
+      const endereco = document.getElementById('cliente-endereco').value.trim();
+      const pagamento = document.getElementById('forma-pagamento').value;
+
+      if (tipo.includes('Entrega') && !endereco) {
+        alert("Por favor, informe o endereço para entrega.");
+        return;
+      }
+
+      let mensagem = `*NOVO PEDIDO - PASTEL DO GLÓRIA*\n\n`;
+      mensagem += `*Cliente:* ${nome}\n`;
+      mensagem += `*Recebimento:* ${tipo}\n`;
+      if (tipo.includes('Entrega')) {
+        mensagem += `*Endereço:* ${endereco}\n`;
+      }
+      mensagem += `*Pagamento:* ${pagamento}\n\n`;
+      mensagem += `*ITENS DO PEDIDO:*\n`;
+
+      let total = 0;
+      produtos.forEach(p => {
+        const qtd = carrinho[p.id] || 0;
+        if (qtd > 0) {
+          const sub = p.preco * qtd;
+          total += sub;
+          mensagem += `• ${qtd}x ${p.nome} (${formatarMoeda(sub)})\n`;
+        }
+      });
+
+      mensagem += `\n*Total Estimado:* ${formatarMoeda(total)} (+ taxa de entrega, se houver)`;
+
+      const url = `https://wa.me/${WHATSAPP_LOJA}?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, '_blank');
+    }
+
+    renderizarMenu();
+  </script>
+</body>
+</html>
