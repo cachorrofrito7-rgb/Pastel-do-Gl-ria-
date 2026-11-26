@@ -322,7 +322,7 @@
       if (limpo.startsWith("http://") || limpo.startsWith("https://") || limpo.startsWith("data:")) {
         return limpo;
       }
-      const pasta = LOJA.pastaImagens.endsWith("/") ? LOJA.pastaImagens : `${LOJA.pastaImagens}/`;
+      const pasta = LOJA.pastaImagens.endsWith("") ? LOJA.pastaImagens : `${LOJA.pastaImagens}/`;
       const arquivo = limpo.startsWith("/") ? limpo.slice(1) : limpo;
       return `${pasta}${arquivo}`;
     }
