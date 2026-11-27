@@ -22,7 +22,7 @@
     header {
       background: linear-gradient(135deg, #1f1209 0%, #3d1c0a 100%);
       color: #fff;
-      padding: 20px 16px;
+      padding: 22px 16px;
       text-align: center;
       border-bottom: 4px solid var(--accent);
     }
@@ -34,8 +34,26 @@
       font-weight: 800;
       padding: 4px 12px;
       border-radius: 20px;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
       text-transform: uppercase;
+    }
+    .header-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .loja-logo {
+      width: 100%;
+      max-width: 240px;
+      max-height: 150px;
+      height: auto;
+      border-radius: 16px;
+      object-fit: contain;
+      background: #ffffff;
+      padding: 8px;
+      border: 3px solid var(--accent);
+      box-shadow: 0 8px 20px rgba(0, 0, 0, 0.35);
     }
     header h1 { font-size: 24px; font-weight: 800; letter-spacing: 0.5px; }
     header p { font-size: 13px; color: #e5e7eb; margin-top: 6px; }
@@ -226,8 +244,19 @@
 
   <header>
     <div class="badge-top" id="loja-badge">⭐ 5,0 no Google • Delivery Oficial</div>
-    <h1 id="loja-nome">Pastel do Glória</h1>
-    <p id="loja-slogan">Pastéis fritos na hora, porções crocantes e bebidas geladas!</p>
+    <div class="header-brand">
+      <img
+        id="loja-logo"
+        class="loja-logo"
+        src=""
+        alt="Logo Pastel do Glória"
+        style="display: none;"
+      >
+      <div>
+        <h1 id="loja-nome">Pastel do Glória</h1>
+        <p id="loja-slogan">Pastéis fritos na hora, porções crocantes e bebidas geladas!</p>
+      </div>
+    </div>
     <div class="info-pills">
       <span class="pill" id="loja-endereco">📍 R. Manduca Nunes, 160 - Glória, POA</span>
       <span class="pill" id="loja-horario">🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)</span>
@@ -295,6 +324,7 @@
     // CONFIGURAÇÃO CENTRAL DA LOJA (facilita reutilizar para outros clientes)
     const LOJA = {
       nome: "Pastel do Glória",
+      logoArquivo: "", // Ex: "logo-gloria.png" (na raiz do repo)
       badge: "⭐ 5,0 no Google • Delivery Oficial",
       slogan: "Pastéis fritos na hora, porções crocantes e bebidas geladas!",
       whatsapp: "5553991312445",
@@ -417,7 +447,7 @@
         id: 9,
         categoria: "doces",
         nome: "Mumu tradicional",
-        desc: " Tradicional mumu cremoso derretido.",
+        desc: "Tradicional mumu cremoso derretido.",
         preco: 22.00,
         destaque: "",
         arquivoImagem: "doce-mumu.jpg"
@@ -506,6 +536,22 @@
         ${LOJA.obsRodape}<br>
         <em>Cardápio Digital</em>
       `;
+
+      const logoEl = document.getElementById("loja-logo");
+      if (logoEl) {
+        logoEl.alt = `Logo ${LOJA.nome}`;
+        if (LOJA.logoArquivo && LOJA.logoArquivo.trim()) {
+          logoEl.onerror = function () {
+            this.style.display = "none";
+          };
+          logoEl.onload = function () {
+            this.style.display = "block";
+          };
+          logoEl.src = resolverImagem(LOJA.logoArquivo, "");
+        } else {
+          logoEl.style.display = "none";
+        }
+      }
     }
 
     function formatarMoeda(valor) {
