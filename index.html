@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pastel do Glória | Cardápio Digital</title>
+  <style>
+    :root {
+      --primary: #d9381e;
+      --primary-dark: #b32912;
+      --accent: #f59e0b;
+      --bg: #f8f9fa;
+      --card: #ffffff;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --whatsapp: #25d366;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding-bottom: 95px; }
+
+    header {
+      background: linear-gradient(135deg, #1f1209 0%, #3d1c0a 100%);
+      color: #fff;
+      padding: 22px 16px;
+      text-align: center;
+      border-bottom: 4px solid var(--accent);
+    }
+    .badge-top {
+      display: inline-block;
+      background: var(--accent);
+      color: #1f1209;
+      font-size: 12px;
+      font-weight: 800;
+      padding: 4px 12px;
+      border-radius: 20px;
+      margin-bottom: 12px;
+      text-transform: uppercase;
+    }
+    .header-brand {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .loja-logo {
+      width: 176px;
+      height: 176px;
+      border-radius: 24px;
+      object-fit: cover;
+      background: #f5b841;
+      border: 3px solid var(--accent);
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+    }
+    header h1 { font-size: 24px; font-weight: 800; letter-spacing: 0.5px; }
+    header p { font-size: 13px; color: #e5e7eb; margin-top: 6px; }
+    .info-pills {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 12px;
+    }
+    .pill {
+      background: rgba(255,255,255,0.12);
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 12px;
+    }
+
+    .promo-banner {
+      background: #fffbeb;
+      border: 1px dashed var(--accent);
+      margin: 14px 0;
+      padding: 12px;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 13px;
+      color: #92400e;
+    }
+    .promo-banner strong { color: var(--primary); }
+
+    /* Abas separadas (mostra apenas a categoria escolhida) */
+    .tabs-bar {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 8px;
+      margin: 12px 0 16px;
+    }
+    .tab-btn {
+      background: var(--card);
+      border: 1px solid #e5e7eb;
+      color: var(--text);
+      padding: 11px 10px;
+      border-radius: 10px;
+      font-size: 13px;
+      font-weight: 700;
+      cursor: pointer;
+      text-align: center;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+      transition: all 0.15s ease;
+    }
+    .tab-btn.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 3px 8px rgba(217, 56, 30, 0.25);
+    }
+
+    .container { max-width: 600px; margin: 0 auto; padding: 0 16px; }
+    .section-title {
+      font-size: 17px;
+      font-weight: 700;
+      margin: 10px 0 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+    }
+    .section-count {
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--muted);
+    }
+
+    .item-card {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      border: 1px solid #eef0f2;
+    }
+    .item-thumb {
+      width: 72px;
+      height: 72px;
+      border-radius: 10px;
+      object-fit: cover;
+      flex-shrink: 0;
+      background: #fef3c7;
+      border: 1px solid #eef0f2;
+    }
+    .item-info { flex: 1; min-width: 0; }
+    .tag-destaque {
+      display: inline-block;
+      background: #fef3c7;
+      color: #b45309;
+      font-size: 11px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 6px;
+      margin-bottom: 4px;
+    }
+    .item-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
+    .item-info p { font-size: 13px; color: var(--muted); line-height: 1.35; margin-bottom: 8px; }
+    .price { font-size: 16px; font-weight: 800; color: var(--primary); }
+
+    .qty-control {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      background: #f3f4f6;
+      padding: 6px 10px;
+      border-radius: 10px;
+      flex-shrink: 0;
+    }
+    .qty-btn {
+      width: 28px;
+      height: 28px;
+      border: none;
+      border-radius: 8px;
+      background: var(--primary);
+      color: #fff;
+      font-size: 18px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+    .qty-btn.minus { background: #9ca3af; }
+    .qty-val { font-weight: 700; min-width: 18px; text-align: center; }
+
+    .checkout-box {
+      background: var(--card);
+      border-radius: 12px;
+      padding: 16px;
+      margin-top: 18px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+    }
+    .checkout-box label { display: block; font-size: 13px; font-weight: 600; margin: 10px 0 4px; }
+    .checkout-box input, .checkout-box select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #d1d5db;
+      border-radius: 8px;
+      font-size: 14px;
+    }
+
+    .store-footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--muted);
+      margin-top: 24px;
+      line-height: 1.6;
+    }
+
+    .bottom-bar {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: #fff;
+      padding: 12px 16px;
+      box-shadow: 0 -3px 12px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      z-index: 100;
+    }
+    .total-box span { display: block; font-size: 12px; color: var(--muted); }
+    .total-box strong { font-size: 18px; color: var(--text); }
+    .btn-whats {
+      background: var(--whatsapp);
+      color: #fff;
+      border: none;
+      padding: 12px 18px;
+      border-radius: 10px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .btn-whats:disabled { background: #9ca3af; cursor: not-allowed; }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="badge-top" id="loja-badge">⭐ 5,0 no Google • Delivery Oficial</div>
+    <div class="header-brand">
+      <img
+        id="loja-logo"
+        class="loja-logo"
+        src=""
+        alt="Logo Pastel do Glória"
+        style="display: none;"
+      >
+      <div>
+        <h1 id="loja-nome">Pastel do Glória</h1>
+        <p id="loja-slogan">Pastéis fritos na hora, porções crocantes e bebidas geladas!</p>
+      </div>
+    </div>
+    <div class="info-pills">
+      <span class="pill" id="loja-endereco">📍 R. Manduca Nunes, 160 - Glória, POA</span>
+      <span class="pill" id="loja-horario">🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)</span>
+    </div>
+  </header>
+
+  <div class="container">
+    <div class="promo-banner">
+      🔥 <strong>Peça direto por aqui sem taxas de aplicativo!</strong><br>
+      Escolha por aba e envie direto para o nosso WhatsApp.
+    </div>
+
+    <!-- Abas de navegação: mostra apenas a categoria escolhida -->
+    <div class="tabs-bar" id="tabs-bar"></div>
+
+    <!-- Apenas a parte da aba ativa aparece aqui -->
+    <div id="menu-container"></div>
+
+    <div class="checkout-box">
+      <div class="section-title" style="margin-top: 0;">🛵 Dados para Entrega / Retirada</div>
+      <label for="cliente-nome">Seu Nome</label>
+      <input type="text" id="cliente-nome" placeholder="Ex: João Silva">
+
+      <label for="tipo-entrega">Como deseja receber?</label>
+      <select id="tipo-entrega" onchange="toggleEndereco()">
+        <option value="Entrega (Delivery)">Entrega (Delivery)</option>
+        <option value="Retirada no Local" id="opcao-retirada">Retirada no Local (R. Manduca Nunes, 160)</option>
+      </select>
+
+      <div id="box-endereco">
+        <label for="cliente-endereco">Endereço completo e ponto de referência</label>
+        <input type="text" id="cliente-endereco" placeholder="Rua, número, bairro...">
+      </div>
+
+      <label for="forma-pagamento">Forma de Pagamento</label>
+      <select id="forma-pagamento">
+        <option value="Pix">Pix</option>
+        <option value="Cartão de Crédito (Maquininha)">Cartão de Crédito (Maquininha / NFC)</option>
+        <option value="Cartão de Débito (Maquininha)">Cartão de Débito (Maquininha / NFC)</option>
+        <option value="Dinheiro">Dinheiro</option>
+      </select>
+
+      <label for="cliente-obs">Observações do Pedido (opcional)</label>
+      <input type="text" id="cliente-obs" placeholder="Ex: Sem cebola, mandar maionese extra...">
+    </div>
+
+    <div class="store-footer" id="loja-rodape">
+      <strong>Pastel do Glória</strong> • R. Manduca Nunes, 160 - Glória, Porto Alegre - RS<br>
+      Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC<br>
+      <em>Prévia demonstrativa • Cardápio Digital</em>
+    </div>
+  </div>
+
+  <div class="bottom-bar">
+    <div class="total-box">
+      <span>Total do Pedido</span>
+      <strong id="total-valor">R$ 0,00</strong>
+    </div>
+    <button class="btn-whats" id="btn-enviar" onclick="enviarWhatsApp()" disabled>
+      Enviar no WhatsApp
+    </button>
+  </div>
+
+  <script>
+    // CONFIGURAÇÃO CENTRAL DA LOJA (facilita reutilizar para outros clientes)
+    const LOJA = {
+      nome: "Pastel do Glória",
+      logoArquivo: "loja-logo.jpg",
+      badge: "⭐ 5,0 no Google • Delivery Oficial",
+      slogan: "Pastéis fritos na hora, porções crocantes e bebidas geladas!",
+      whatsapp: "5553991312445",
+      enderecoCurto: "📍 R. Manduca Nunes, 160 - Glória, POA",
+      enderecoCompleto: "R. Manduca Nunes, 160 - Glória, Porto Alegre - RS",
+      horario: "🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)",
+      obsRodape: "Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC",
+      pastaImagens: "" // Vazio porque as imagens estão na raiz do repo (ou use "img/" se criar a pasta)
+    };
+
+    function criarIconePadrao(emoji) {
+      return "data:image/svg+xml;utf8," + encodeURIComponent(`
+        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
+          <rect width="120" height="120" fill="#fef3c7"/>
+          <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="44">${emoji}</text>
+        </svg>
+      `);
+    }
+
+    // Deixe apenas o nome do arquivo em "arquivoImagem" (ou URL completa começando com http/https)
+    function resolverImagem(arquivoImagem, emojiFallback) {
+      const padrao = criarIconePadrao(emojiFallback);
+      if (!arquivoImagem || !arquivoImagem.trim()) return padrao;
+      const limpo = arquivoImagem.trim();
+      if (limpo.startsWith("http://") || limpo.startsWith("https://") || limpo.startsWith("data:")) {
+        return limpo;
+      }
+      const pastaBase = LOJA.pastaImagens ? LOJA.pastaImagens.trim() : "";
+      const pasta = !pastaBase || pastaBase.endsWith("/") ? pastaBase : `${pastaBase}/`;
+      const arquivo = limpo.startsWith("/") ? limpo.slice(1) : limpo;
+      return `${pasta}${arquivo}`;
+    }
+
+    const categorias = [
+      { chave: "salgados", titulo: "🥟 Pastéis Salgados", emoji: "🥟" },
+      { chave: "doces",    titulo: "🍫 Pastéis Doces",    emoji: "🍫" },
+      { chave: "porcoes",  titulo: "🍟 Porções",         emoji: "🍟" },
+      { chave: "bebidas",  titulo: "🥤 Bebidas",         emoji: "🥤" }
+    ];
+
+    let categoriaAtiva = "salgados";
+
+    const produtos = [
+      // PASTÉIS SALGADOS
+      {
+        id: 1,
+        categoria: "salgados",
+        nome: "Pastel de Camarão Especial",
+        desc: "O destaque da casa! Camarão bem temperado, cremoso e recheado da ponta ao meio.",
+        preco: 32.00,
+        destaque: "⭐ Mais Elogiado",
+        arquivoImagem: "camarao-especial.jpeg"
+      },
+      {
+        id: 2,
+        categoria: "salgados",
+        nome: "Carne de Panela com Mussarela e Cheddar",
+        desc: "Carne de panela desfiada suculenta com muito queijo mussarela e cheddar derretido.",
+        preco: 28.00,
+        destaque: "🔥 Campeão de Vendas",
+        arquivoImagem: "carne-panela.jpg"
+      },
+      {
+        id: 3,
+        categoria: "salgados",
+        nome: "Carne Moída com Queijo e Ovo",
+        desc: "Clássico tradicional muito recheado com carne temperada, mussarela e ovo picado.",
+        preco: 24.00,
+        destaque: "Tradicional",
+        arquivoImagem: "carne-moida-queijo-ovo.jpg"
+      },
+      {
+        id: 4,
+        categoria: "salgados",
+        nome: "Frango Cremoso com Catupiry",
+        desc: "Peito de frango desfiado temperado na casa com camada generosa de Catupiry.",
+        preco: 25.00,
+        destaque: "",
+        arquivoImagem: "frango-catupiry.jpg"
+      },
+      {
+        id: 5,
+        categoria: "salgados",
+        nome: "Calabresa com Cheddar",
+        desc: "Calabresa fatiada frita na hora com cheddar cremoso.",
+        preco: 24.00,
+        destaque: "",
+        arquivoImagem: "calabresa-cheddar.jpg"
+      },
+      {
+        id: 6,
+        categoria: "salgados",
+        nome: "Quatro Queijos",
+        desc: "Mussarela, provolone, parmesão e requeijão cremoso derretidos na hora.",
+        preco: 25.00,
+        destaque: "",
+        arquivoImagem: "quatro-queijos.jpg"
+      },
+
+      // PASTÉIS DOCES
+      {
+        id: 7,
+        categoria: "doces",
+        nome: "Nutella com Banana",
+        desc: "Massa crocante recheada com creme de avelã Nutella original e rodelas de banana.",
+        preco: 26.00,
+        destaque: "🍫 Favorito",
+        arquivoImagem: "nutella-banana.jpg"
+      },
+      {
+        id: 8,
+        categoria: "doces",
+        nome: "M&M's",
+        desc: "Confetes de chocolate frescos sortidos.",
+        preco: 26.00,
+        destaque: "",
+        arquivoImagem: "mms.jpg"
+      },
+      {
+        id: 9,
+        categoria: "doces",
+        nome: "Mumu tradicional",
+        desc: "Tradicional mumu cremoso derretido.",
+        preco: 22.00,
+        destaque: "",
+        arquivoImagem: "doce-mumu.jpg"
+      },
+      {
+        id: 17,
+        categoria: "doces",
+        nome: "Chocolate com Coco",
+        desc: "Chocolate cremoso derretido com coco ralado.",
+        preco: 26.00,
+        destaque: "",
+        arquivoImagem: "chocolate-coco.jpg"
+      },
+      {
+        id: 18,
+        categoria: "doces",
+        nome: "Ouro Branco",
+        desc: "Recheio cremoso com bombom Ouro Branco.",
+        preco: 26.00,
+        destaque: "",
+        arquivoImagem: "ouro-branco.jpg"
+      },
+
+      // PORÇÕES
+      {
+        id: 10,
+        categoria: "porcoes",
+        nome: "Porção de Batata Frita Crocante (400g)",
+        desc: "Batatas sequinhas e crocantes acompanhadas de molho da casa.",
+        preco: 22.00,
+        destaque: "",
+        arquivoImagem: "batata-frita.jpg"
+      },
+      {
+        id: 11,
+        categoria: "porcoes",
+        nome: "Batata Frita com Cheddar e Bacon (450g)",
+        desc: "Porção generosa coberta com cheddar cremoso e cubos de bacon crocante.",
+        preco: 29.00,
+        destaque: "🔥 Para Compartilhar",
+        arquivoImagem: "batata-cheddar-bacon.jpg"
+      },
+      {
+        id: 12,
+        categoria: "porcoes",
+        nome: "Porção de Mini Pastéis Mistos (12 unid.)",
+        desc: "Mix de mini pastéis de carne, queijo e frango fritos na hora.",
+        preco: 28.00,
+        destaque: "",
+        arquivoImagem: "mini-pasteis.jpg"
+      },
+
+      // BEBIDAS
+      {
+        id: 13,
+        categoria: "bebidas",
+        nome: "Coca-Cola Lata 350ml",
+        desc: "Bem gelada (Original ou Zero).",
+        preco: 6.50,
+        destaque: "",
+        arquivoImagem: "coca-lata.jpg"
+      },
+      {
+        id: 14,
+        categoria: "bebidas",
+        nome: "Guaraná Antarctica Lata 350ml",
+        desc: "Bem gelado.",
+        preco: 6.00,
+        destaque: "",
+        arquivoImagem: "guarana-lata.jpg"
+      },
+      {
+        id: 15,
+        categoria: "bebidas",
+        nome: "Refrigerante 2 Litros",
+        desc: "Coca-Cola ou Guaraná Antarctica (informe o sabor nas observações).",
+        preco: 14.00,
+        destaque: "Ideal para Família",
+        arquivoImagem: "refri-2l.jpg"
+      },
+      {
+        id: 16,
+        categoria: "bebidas",
+        nome: "Água Mineral 500ml",
+        desc: "Sem gás ou com gás.",
+        preco: 4.50,
+        destaque: "",
+        arquivoImagem: "agua-500ml.jpg"
+      }
+    ];
+
+    const carrinho = {};
+
+    function aplicarDadosLoja() {
+      document.title = `${LOJA.nome} | Cardápio Digital`;
+      document.getElementById("loja-badge").textContent = LOJA.badge;
+      document.getElementById("loja-nome").textContent = LOJA.nome;
+      document.getElementById("loja-slogan").textContent = LOJA.slogan;
+      document.getElementById("loja-endereco").textContent = LOJA.enderecoCurto;
+      document.getElementById("loja-horario").textContent = LOJA.horario;
+      document.getElementById("opcao-retirada").textContent = `Retirada no Local (${LOJA.enderecoCompleto})`;
+      document.getElementById("loja-rodape").innerHTML = `
+        <strong>${LOJA.nome}</strong> • ${LOJA.enderecoCompleto}<br>
+        ${LOJA.obsRodape}<br>
+        <em>Cardápio Digital</em>
+      `;
+
+      const logoEl = document.getElementById("loja-logo");
+      if (logoEl) {
+        logoEl.alt = `Logo ${LOJA.nome}`;
+        if (LOJA.logoArquivo && LOJA.logoArquivo.trim()) {
+          logoEl.onerror = function () {
+            this.style.display = "none";
+          };
+          logoEl.onload = function () {
+            this.style.display = "block";
+          };
+          logoEl.src = resolverImagem(LOJA.logoArquivo, "");
+        } else {
+          logoEl.style.display = "none";
+        }
+      }
+    }
+
+    function formatarMoeda(valor) {
+      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function trocarAba(chave) {
+      categoriaAtiva = chave;
+      renderizarAbas();
+      renderizarMenu();
+    }
+
+    function renderizarAbas() {
+      const tabsBar = document.getElementById('tabs-bar');
+      tabsBar.innerHTML = categorias.map(cat => {
+        const ativa = cat.chave === categoriaAtiva ? 'active' : '';
+        return `
+          <button type="button" class="tab-btn ${ativa}" onclick="trocarAba('${cat.chave}')">
+            ${cat.titulo}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderizarMenu() {
+      const container = document.getElementById('menu-container');
+      const cat = categorias.find(c => c.chave === categoriaAtiva) || categorias[0];
+      const itensCat = produtos.filter(p => p.categoria === cat.chave);
+      const padrao = criarIconePadrao(cat.emoji);
+
+      const cardsHtml = itensCat.map(p => {
+        const qtd = carrinho[p.id] || 0;
+        const srcFoto = resolverImagem(p.arquivoImagem, cat.emoji);
+
+        return `
+          <div class="item-card">
+            <img
+              class="item-thumb"
+              src="${srcFoto}"
+              alt="${p.nome}"
+              onerror="this.onerror=null;this.src='${padrao}';"
+            >
+            <div class="item-info">
+              ${p.destaque ? `<span class="tag-destaque">${p.destaque}</span>` : ''}
+              <h3>${p.nome}</h3>
+              <p>${p.desc}</p>
+              <div class="price">${formatarMoeda(p.preco)}</div>
+            </div>
+            <div class="qty-control">
+              <button type="button" class="qty-btn minus" onclick="alterarQtd(${p.id}, -1)">-</button>
+              <span class="qty-val">${qtd}</span>
+              <button type="button" class="qty-btn" onclick="alterarQtd(${p.id}, 1)">+</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        <div class="section-title">
+          <span>${cat.titulo}</span>
+          <span class="section-count">${itensCat.length} opções</span>
+        </div>
+        ${cardsHtml}
+      `;
+
+      atualizarTotal();
+    }
+
+    function alterarQtd(id, delta) {
+      carrinho[id] = Math.max(0, (carrinho[id] || 0) + delta);
+      renderizarMenu();
+    }
+
+    function atualizarTotal() {
+      let total = 0;
+      let totalItens = 0;
+      produtos.forEach(p => {
+        const qtd = carrinho[p.id] || 0;
+        total += p.preco * qtd;
+        totalItens += qtd;
+      });
+      document.getElementById('total-valor').innerText = formatarMoeda(total);
+      document.getElementById('btn-enviar').disabled = totalItens === 0;
+    }
+
+    function toggleEndereco() {
+      const tipo = document.getElementById('tipo-entrega').value;
+      document.getElementById('box-endereco').style.display = tipo.includes('Entrega') ? 'block' : 'none';
+    }
+
+    function enviarWhatsApp() {
+      const nome = document.getElementById('cliente-nome').value.trim() || "Cliente";
+      const tipo = document.getElementById('tipo-entrega').value;
+      const endereco = document.getElementById('cliente-endereco').value.trim();
+      const pagamento = document.getElementById('forma-pagamento').value;
+      const obs = document.getElementById('cliente-obs').value.trim();
+
+      if (tipo.includes('Entrega') && !endereco) {
+        alert("Por favor, informe o endereço para entrega.");
+        return;
+      }
+
+      let mensagem = `*NOVO PEDIDO - ${LOJA.nome.toUpperCase()}*\n\n`;
+      mensagem += `*Cliente:* ${nome}\n`;
+      mensagem += `*Recebimento:* ${tipo}\n`;
+      if (tipo.includes('Entrega')) {
+        mensagem += `*Endereço:* ${endereco}\n`;
+      }
+      mensagem += `*Pagamento:* ${pagamento}\n`;
+      if (obs) {
+        mensagem += `*Observações:* ${obs}\n`;
+      }
+      mensagem += `\n*ITENS DO PEDIDO:*\n`;
+
+      let total = 0;
+      produtos.forEach(p => {
+        const qtd = carrinho[p.id] || 0;
+        if (qtd > 0) {
+          const sub = p.preco * qtd;
+          total += sub;
+          mensagem += `• ${qtd}x ${p.nome} (${formatarMoeda(sub)})\n`;
+        }
+      });
+
+      mensagem += `\n*Total Estimado:* ${formatarMoeda(total)} (+ taxa de entrega, se houver)`;
+
+      const url = `https://wa.me/${LOJA.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, '_blank');
+    }
+
+    aplicarDadosLoja();
+    renderizarAbas();
+    renderizarMenu();
+  </script>
+</body>
+</html>
