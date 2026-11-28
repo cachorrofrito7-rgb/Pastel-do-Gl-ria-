@@ -86,33 +86,15 @@
     }
 
     @keyframes pulse-green {
-      0% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.85);
-      }
-      70% {
-        transform: scale(1.08);
-        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
-      }
-      100% {
-        transform: scale(0.95);
-        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
-      }
+      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.85); }
+      70% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
+      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
     }
 
     @keyframes pulse-red {
-      0% {
-        transform: scale(0.96);
-        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55);
-      }
-      70% {
-        transform: scale(1.04);
-        box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
-      }
-      100% {
-        transform: scale(0.96);
-        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
-      }
+      0% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55); }
+      70% { transform: scale(1.04); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
+      100% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
     }
 
     .header-brand {
@@ -158,7 +140,6 @@
     }
     .promo-banner strong { color: var(--primary); }
 
-    /* Abas separadas (mostra apenas a categoria escolhida) */
     .tabs-bar {
       display: grid;
       grid-template-columns: repeat(2, 1fr);
@@ -350,10 +331,7 @@
       Expor o valor da Tele-entrega por Exemplo.
     </div>
 
-    <!-- Abas de navegação: mostra apenas a categoria escolhida -->
     <div class="tabs-bar" id="tabs-bar"></div>
-
-    <!-- Apenas a parte da aba ativa aparece aqui -->
     <div id="menu-container"></div>
 
     <div class="checkout-box">
@@ -397,7 +375,7 @@
   <div class="bottom-bar">
     <div class="total-box">
       <span>Total do Pedido</span>
-      <strong id="total-valor">R\$ 0,00</strong>
+      <strong id="total-valor">R$ 0,00</strong>
     </div>
     <button class="btn-whats" id="btn-enviar" onclick="enviarWhatsApp()" disabled>
       Enviar no WhatsApp
@@ -405,7 +383,6 @@
   </div>
 
   <script>
-    // CONFIGURAÇÃO CENTRAL DA LOJA (facilita reutilizar para outros clientes)
     const LOJA = {
       nome: "Pastel do Glória",
       logoArquivo: "loja-logo.jpg",
@@ -417,9 +394,7 @@
       horario: "🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)",
       tempoEntrega: "de 45 minutos a 70 minutos",
       obsRodape: "Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC",
-      pastaImagens: "", // Vazio porque as imagens estão na raiz do repo (ou use "img/" se criar a pasta)
-      // Agenda semanal: 0 = Dom, 1 = Seg, 2 = Ter (null = fechado), 3 = Qua, 4 = Qui, 5 = Sex, 6 = Sáb
-      // Horários em minutos desde 00:00 (ex: 18h = 1080, 19h = 1140, 23:30 = 1410)
+      pastaImagens: "",
       agenda: {
         0: { abre: 18 * 60, fecha: 23 * 60 + 30 },
         1: { abre: 18 * 60, fecha: 23 * 60 + 30 },
@@ -471,15 +446,11 @@
     }
 
     function criarIconePadrao(emoji) {
-      return "data:image/svg+xml;utf8," + encodeURIComponent(`
-        <svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120">
-          <rect width="120" height="120" fill="#fef3c7"/>
-          <text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="44">${emoji}</text>
-        </svg>
-      `);
+      return "data:image/svg+xml;utf8," + encodeURIComponent(
+        `<svg xmlns="http://www.w3.org/2000/svg" width="120" height="120" viewBox="0 0 120 120"><rect width="120" height="120" fill="#fef3c7"/><text x="50%" y="54%" dominant-baseline="middle" text-anchor="middle" font-size="44">${emoji}</text></svg>`
+      );
     }
 
-    // Deixe apenas o nome do arquivo em "arquivoImagem" (ou URL completa começando com http/https)
     function resolverImagem(arquivoImagem, emojiFallback) {
       const padrao = criarIconePadrao(emojiFallback);
       if (!arquivoImagem || !arquivoImagem.trim()) return padrao;
@@ -503,7 +474,6 @@
     let categoriaAtiva = "salgados";
 
     const produtos = [
-      // PASTÉIS SALGADOS
       {
         id: 1,
         categoria: "salgados",
@@ -558,8 +528,6 @@
         destaque: "",
         arquivoImagem: "quatro-queijos.jpg"
       },
-
-      // PASTÉIS DOCES
       {
         id: 7,
         categoria: "doces",
@@ -605,8 +573,6 @@
         destaque: "",
         arquivoImagem: "ouro-branco.jpg"
       },
-
-      // PORÇÕES
       {
         id: 10,
         categoria: "porcoes",
@@ -634,8 +600,6 @@
         destaque: "",
         arquivoImagem: "mini-pasteis.jpg"
       },
-
-      // BEBIDAS
       {
         id: 13,
         categoria: "bebidas",
@@ -659,4 +623,222 @@
         categoria: "bebidas",
         nome: "Refrigerante 2 Litros",
         desc: "Coca-Cola ou Guaraná Antarctica (informe o sabor nas observações).",
-        preco:
+        preco: 0.00,
+        destaque: "Ideal para Família",
+        arquivoImagem: "refri-2l.jpg"
+      },
+      {
+        id: 16,
+        categoria: "bebidas",
+        nome: "Água Mineral 500ml",
+        desc: "Sem gás ou com gás.",
+        preco: 0.00,
+        destaque: "",
+        arquivoImagem: "agua-500ml.jpg"
+      }
+    ];
+
+    const carrinho = {};
+
+    function aplicarDadosLoja() {
+      document.title = `${LOJA.nome} | Cardápio Digital`;
+      document.getElementById("loja-badge").textContent = LOJA.badge;
+      document.getElementById("loja-nome").textContent = LOJA.nome;
+      document.getElementById("loja-slogan").textContent = LOJA.slogan;
+      document.getElementById("loja-endereco").textContent = LOJA.enderecoCurto;
+      document.getElementById("loja-horario").textContent = LOJA.horario;
+      document.getElementById("opcao-retirada").textContent = `Retirada no Local (${LOJA.enderecoCompleto})`;
+      document.getElementById("loja-rodape").innerHTML = `
+        <strong>${LOJA.nome}</strong> • ${LOJA.enderecoCompleto}<br>
+        ${LOJA.obsRodape}<br>
+        <em>Prévia demonstrativa • Cardápio Digital</em>
+      `;
+
+      const logoEl = document.getElementById("loja-logo");
+      if (logoEl) {
+        logoEl.alt = `Logo ${LOJA.nome}`;
+        if (LOJA.logoArquivo && LOJA.logoArquivo.trim()) {
+          logoEl.onerror = function () {
+            this.style.display = "none";
+          };
+          logoEl.onload = function () {
+            this.style.display = "block";
+          };
+          logoEl.src = resolverImagem(LOJA.logoArquivo, "");
+        } else {
+          logoEl.style.display = "none";
+        }
+      }
+
+      atualizarStatusLoja();
+    }
+
+    function formatarMoeda(valor) {
+      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+    }
+
+    function trocarAba(chave) {
+      categoriaAtiva = chave;
+      renderizarAbas();
+      renderizarMenu();
+    }
+
+    function renderizarAbas() {
+      const tabsBar = document.getElementById('tabs-bar');
+      tabsBar.innerHTML = categorias.map(cat => {
+        const ativa = cat.chave === categoriaAtiva ? 'active' : '';
+        return `
+          <button type="button" class="tab-btn ${ativa}" onclick="trocarAba('${cat.chave}')">
+            ${cat.titulo}
+          </button>
+        `;
+      }).join('');
+    }
+
+    function renderizarMenu() {
+      const container = document.getElementById('menu-container');
+      const cat = categorias.find(c => c.chave === categoriaAtiva) || categorias[0];
+      const itensCat = produtos.filter(p => p.categoria === cat.chave);
+      const padrao = criarIconePadrao(cat.emoji);
+
+      const cardsHtml = itensCat.map(p => {
+        const qtd = carrinho[p.id] || 0;
+        const srcFoto = resolverImagem(p.arquivoImagem, cat.emoji);
+
+        return `
+          <div class="item-card">
+            <img
+              class="item-thumb"
+              src="${srcFoto}"
+              alt="${p.nome}"
+              onerror="this.onerror=null;this.src='${padrao}';"
+            >
+            <div class="item-info">
+              ${p.destaque ? `<span class="tag-destaque">${p.destaque}</span>` : ''}
+              <h3>${p.nome}</h3>
+              <p>${p.desc}</p>
+              <div class="price">${formatarMoeda(p.preco)}</div>
+            </div>
+            <div class="qty-control">
+              <button type="button" class="qty-btn minus" onclick="alterarQtd(${p.id}, -1)">-</button>
+              <span class="qty-val">${qtd}</span>
+              <button type="button" class="qty-btn" onclick="alterarQtd(${p.id}, 1)">+</button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      container.innerHTML = `
+        <div class="section-title">
+          <span>${cat.titulo}</span>
+          <span class="section-count">${itensCat.length} opções</span>
+        </div>
+        ${cardsHtml}
+      `;
+
+      atualizarTotal();
+    }
+
+    function alterarQtd(id, delta) {
+      carrinho[id] = Math.max(0, (carrinho[id] || 0) + delta);
+      renderizarMenu();
+    }
+
+    function atualizarTotal() {
+      let total = 0;
+      let totalItens = 0;
+      produtos.forEach(p => {
+        const qtd = carrinho[p.id] || 0;
+        total += p.preco * qtd;
+        totalItens += qtd;
+      });
+      document.getElementById('total-valor').innerText = formatarMoeda(total);
+      document.getElementById('btn-enviar').disabled = totalItens === 0;
+    }
+
+    function toggleEndereco() {
+      const tipo = document.getElementById('tipo-entrega').value;
+      document.getElementById('box-endereco').style.display = tipo.includes('Entrega') ? 'block' : 'none';
+    }
+
+    function enviarWhatsApp() {
+      const nome = document.getElementById('cliente-nome').value.trim() || "Adriano";
+      const telefone = document.getElementById('cliente-telefone').value.trim() || "99 999999999";
+      const tipo = document.getElementById('tipo-entrega').value;
+      const endereco = document.getElementById('cliente-endereco').value.trim();
+      const pagamento = document.getElementById('forma-pagamento').value;
+      const obs = document.getElementById('cliente-obs').value.trim();
+
+      if (tipo.includes('Entrega') && !endereco) {
+        alert("Por favor, informe o endereço para entrega.");
+        return;
+      }
+
+      const agora = new Date();
+      const horaFormatada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+      const ehEntrega = tipo.includes('Entrega');
+      const statusLoja = verificarLojaAberta(agora);
+
+      let mensagem = `Olá, gostaria de informações sobre o status do meu pedido:\n\n`;
+      mensagem += `*Pedido Cardápio Digital* - _${LOJA.nome.toUpperCase()}_\n`;
+      mensagem += `---------------------------------------\n\n`;
+
+      if (!statusLoja.aberta) {
+        mensagem += `⚠️ _Observação: pedido enviado com a loja fora do horário de atendimento (${statusLoja.texto})._\n\n`;
+      }
+
+      let subtotal = 0;
+      produtos.forEach(p => {
+        const qtd = carrinho[p.id] || 0;
+        if (qtd > 0) {
+          const itemTotal = p.preco * qtd;
+          subtotal += itemTotal;
+          mensagem += `*${qtd}x ${p.nome.toUpperCase()} ${formatarMoeda(itemTotal)}*\n`;
+        }
+      });
+
+      if (obs) {
+        mensagem += `- Obs: *${obs}*\n`;
+      }
+
+      mensagem += `\n*Subtotal:* ${formatarMoeda(subtotal)}\n`;
+      if (ehEntrega) {
+        mensagem += `*Taxa de entrega*: a calcular\n`;
+        mensagem += `*Total: ${formatarMoeda(subtotal)}* (+ taxa de entrega)\n\n`;
+      } else {
+        mensagem += `*Taxa de entrega*: R$ 0,00 (Retirada no local)\n`;
+        mensagem += `*Total: ${formatarMoeda(subtotal)}*\n\n`;
+      }
+
+      mensagem += `---------------------------------------\n\n`;
+
+      if (ehEntrega) {
+        mensagem += `*Tempo de entrega:* ${LOJA.tempoEntrega}\n\n`;
+      } else {
+        mensagem += `*Modalidade:* Retirada no Local\n\n`;
+      }
+
+      mensagem += `*${nome}*\n`;
+      mensagem += `${telefone}\n\n`;
+
+      if (ehEntrega) {
+        mensagem += `${endereco}\n`;
+        mensagem += `Porto Alegre/RS\n\n`;
+      } else {
+        mensagem += `${LOJA.enderecoCompleto}\n\n`;
+      }
+
+      mensagem += `*Pagamento:* ${pagamento}\n\n`;
+      mensagem += `_Pedido gerado pelo Cardápio Digital às ${horaFormatada}_`;
+
+      const url = `https://wa.me/${LOJA.whatsapp}?text=${encodeURIComponent(mensagem)}`;
+      window.open(url, '_blank');
+    }
+
+    aplicarDadosLoja();
+    renderizarAbas();
+    renderizarMenu();
+    setInterval(atualizarStatusLoja, 30000);
+  </script>
+</body>
+</html>
