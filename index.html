@@ -216,30 +216,47 @@
     }
     .item-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
     .item-info p { font-size: 13px; color: var(--muted); line-height: 1.35; margin-bottom: 8px; }
-    .price { font-size: 16px; font-weight: 800; color: var(--primary); }
+    .price-line { font-size: 14px; font-weight: 800; color: var(--primary); }
+
+    .size-controls {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      flex-shrink: 0;
+    }
+    .size-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 6px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+    .size-label { min-width: 44px; color: #374151; }
 
     .qty-control {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 6px;
       background: #f3f4f6;
-      padding: 6px 10px;
-      border-radius: 10px;
+      padding: 4px 8px;
+      border-radius: 8px;
       flex-shrink: 0;
     }
     .qty-btn {
-      width: 28px;
-      height: 28px;
+      width: 24px;
+      height: 24px;
       border: none;
-      border-radius: 8px;
+      border-radius: 6px;
       background: var(--primary);
       color: #fff;
-      font-size: 18px;
+      font-size: 16px;
+      line-height: 1;
       font-weight: bold;
       cursor: pointer;
     }
     .qty-btn.minus { background: #9ca3af; }
-    .qty-val { font-weight: 700; min-width: 18px; text-align: center; }
+    .qty-val { font-weight: 700; min-width: 16px; text-align: center; }
 
     .checkout-box {
       background: var(--card);
@@ -326,9 +343,9 @@
   </header>
 
   <div class="container">
-    <div class="promo-banner">
-      🔥 <strong>Destaque sua promoção aqui!</strong><br>
-      Expor o valor da Tele-entrega por Exemplo.
+    <div class="promo-banner" id="promo-banner">
+      🔥 <strong>Tele-entrega até 5 km (Glória / POA)</strong><br>
+      <span id="faixas-resumo">1km: R$ 5,00 • 2km: R$ 7,00 • 3km: R$ 9,00 • 4km: R$ 11,00 • 5km: R$ 13,00</span>
     </div>
 
     <div class="tabs-bar" id="tabs-bar"></div>
@@ -368,7 +385,7 @@
     <div class="store-footer" id="loja-rodape">
       <strong>Pastel do Glória</strong> • R. Manduca Nunes, 160 - Glória, Porto Alegre - RS<br>
       Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC<br>
-      <em>Prévia demonstrativa • Cardápio Digital</em>
+      <em>Cardápio Digital</em>
     </div>
   </div>
 
@@ -384,6 +401,7 @@
 
   <script>
     const LOJA = {
+      apiUrl: "https://www.pastel-do-glo-ria.onrender.com",
       nome: "Pastel do Glória",
       logoArquivo: "loja-logo.jpg",
       badge: "⭐ 5,0 no Google • Delivery Oficial",
@@ -393,6 +411,7 @@
       enderecoCompleto: "R. Manduca Nunes, 160 - Glória, Porto Alegre - RS",
       horario: "🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)",
       tempoEntrega: "de 45 minutos a 70 minutos",
+      raioMaximoKm: 5,
       obsRodape: "Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC",
       pastaImagens: "",
       agenda: {
@@ -405,6 +424,14 @@
         6: { abre: 18 * 60, fecha: 23 * 60 + 30 }
       }
     };
+
+    let faixasEntrega = [
+      { ateKm: 1, taxa: 5.0 },
+      { ateKm: 2, taxa: 7.0 },
+      { ateKm: 3, taxa: 9.0 },
+      { ateKm: 4, taxa: 11.0 },
+      { ateKm: 5, taxa: 13.0 }
+    ];
 
     function verificarLojaAberta(dataReferencia = new Date()) {
       const dia = dataReferencia.getDay();
@@ -473,172 +500,71 @@
 
     let categoriaAtiva = "salgados";
 
-    const produtos = [
+    function normalizarCategoria(catRaw) {
+      const c = String(catRaw || "").toLowerCase().trim();
+      if (c.includes("doce")) return "doces";
+      if (c.includes("porc")) return "porcoes";
+      if (c.includes("bebid")) return "bebidas";
+      return "salgados";
+    }
+
+    function normalizarProduto(p) {
+      const medio = Number(p.tamanhos?.medio ?? p.precoMedio ?? p.preco ?? 14);
+      const big = Number(p.tamanhos?.big ?? p.precoBig ?? medio);
+      return {
+        id: String(p.id),
+        categoria: normalizarCategoria(p.categoria),
+        nome: p.nome || "Item",
+        desc: p.descricao ?? p.desc ?? "",
+        destaque: p.destaque || "",
+        arquivoImagem: p.imagem ?? p.arquivoImagem ?? "",
+        ativo: p.ativo !== undefined ? Boolean(p.ativo) : true,
+        tamanhos: {
+          medio: Number.isNaN(medio) ? 14 : medio,
+          big: Number.isNaN(big) ? 19 : big
+        }
+      };
+    }
+
+    let produtos = [
       {
-        id: 1,
+        id: "pastel-carne-panela",
         categoria: "salgados",
-        nome: "Pastel de Camarão Especial",
-        desc: "O destaque da casa! Camarão bem temperado, cremoso e recheado da ponta ao meio.",
-        preco: 0.00,
+        nome: "Carne de Panela",
+        desc: "Carne desfiada bem temperada no ponto certo.",
+        destaque: "🔥 Destaque",
+        arquivoImagem: "carne-panela.jpg",
+        ativo: true,
+        tamanhos: { medio: 14.0, big: 19.0 }
+      },
+      {
+        id: "pastel-camarao-especial",
+        categoria: "salgados",
+        nome: "Camarão Especial",
+        desc: "Camarão refogado cremoso com tempero da casa.",
         destaque: "⭐ Mais Elogiado",
-        arquivoImagem: "camarao-especial.jpeg"
-      },
-      {
-        id: 2,
-        categoria: "salgados",
-        nome: "Carne de Panela com Mussarela e Cheddar",
-        desc: "Carne de panela desfiada suculenta com muito queijo mussarela e cheddar derretido.",
-        preco: 0.00,
-        destaque: "🔥 Campeão de Vendas",
-        arquivoImagem: "carne-panela.jpg"
-      },
-      {
-        id: 3,
-        categoria: "salgados",
-        nome: "Carne Moída com Queijo e Ovo",
-        desc: "Clássico tradicional muito recheado com carne temperada, mussarela e ovo picado.",
-        preco: 0.00,
-        destaque: "Tradicional",
-        arquivoImagem: "carne-moida-queijo-ovo.jpg"
-      },
-      {
-        id: 4,
-        categoria: "salgados",
-        nome: "Frango Cremoso com Catupiry",
-        desc: "Peito de frango desfiado temperado na casa com camada generosa de Catupiry.",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "frango-catupiry.jpg"
-      },
-      {
-        id: 5,
-        categoria: "salgados",
-        nome: "Calabresa com Cheddar",
-        desc: "Calabresa fatiada frita na hora com cheddar cremoso.",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "calabresa-cheddar.jpg"
-      },
-      {
-        id: 6,
-        categoria: "salgados",
-        nome: "Quatro Queijos",
-        desc: "Mussarela, provolone, parmesão e requeijão cremoso derretidos na hora.",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "quatro-queijos.jpg"
-      },
-      {
-        id: 7,
-        categoria: "doces",
-        nome: "Nutella com Banana",
-        desc: "Massa crocante recheada com creme de avelã Nutella original e rodelas de banana.",
-        preco: 0.00,
-        destaque: "🍫 Favorito",
-        arquivoImagem: "nutella-banana.jpg"
-      },
-      {
-        id: 8,
-        categoria: "doces",
-        nome: "M&M's",
-        desc: "Confetes de chocolate frescos sortidos.",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "mms.jpg"
-      },
-      {
-        id: 9,
-        categoria: "doces",
-        nome: "Mumu tradicional",
-        desc: "Tradicional mumu cremoso derretido.",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "doce-mumu.jpg"
-      },
-      {
-        id: 17,
-        categoria: "doces",
-        nome: "Chocolate com Coco",
-        desc: "Chocolate cremoso derretido com coco ralado.",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "chocolate-coco.jpg"
-      },
-      {
-        id: 18,
-        categoria: "doces",
-        nome: "Ouro Branco",
-        desc: "Recheio cremoso com bombom Ouro Branco.",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "ouro-branco.jpg"
-      },
-      {
-        id: 10,
-        categoria: "porcoes",
-        nome: "Porção de Batata Frita Crocante (400g)",
-        desc: "Batatas sequinhas e crocantes acompanhadas de molho da casa.",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "batata-frita.jpg"
-      },
-      {
-        id: 11,
-        categoria: "porcoes",
-        nome: "Batata Frita com Cheddar e Bacon (450g)",
-        desc: "Porção generosa coberta com cheddar cremoso e cubos de bacon crocante.",
-        preco: 0.00,
-        destaque: "🔥 Para Compartilhar",
-        arquivoImagem: "batata-cheddar-bacon.jpg"
-      },
-      {
-        id: 12,
-        categoria: "porcoes",
-        nome: "Porção de Mini Pastéis Mistos (12 unid.)",
-        desc: "Mix de mini pastéis de carne, queijo e frango fritos na hora.",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "mini-pasteis.jpg"
-      },
-      {
-        id: 13,
-        categoria: "bebidas",
-        nome: "Coca-Cola Lata 350ml",
-        desc: "Bem gelada (Original ou Zero).",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "coca-lata.jpg"
-      },
-      {
-        id: 14,
-        categoria: "bebidas",
-        nome: "Guaraná Antarctica Lata 350ml",
-        desc: "Bem gelado.",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "guarana-lata.jpg"
-      },
-      {
-        id: 15,
-        categoria: "bebidas",
-        nome: "Refrigerante 2 Litros",
-        desc: "Coca-Cola ou Guaraná Antarctica (informe o sabor nas observações).",
-        preco: 0.00,
-        destaque: "Ideal para Família",
-        arquivoImagem: "refri-2l.jpg"
-      },
-      {
-        id: 16,
-        categoria: "bebidas",
-        nome: "Água Mineral 500ml",
-        desc: "Sem gás ou com gás.",
-        preco: 0.00,
-        destaque: "",
-        arquivoImagem: "agua-500ml.jpg"
+        arquivoImagem: "camarao-especial.jpeg",
+        ativo: true,
+        tamanhos: { medio: 18.0, big: 24.0 }
       }
     ];
 
+    // carrinho[id] = { medio: 0, big: 0 }
     const carrinho = {};
+
+    function getQtdItem(id) {
+      const entry = carrinho[id];
+      if (!entry) return { medio: 0, big: 0 };
+      return { medio: entry.medio || 0, big: entry.big || 0 };
+    }
+
+    function atualizarResumoFaixas() {
+      const el = document.getElementById("faixas-resumo");
+      if (!el || !Array.isArray(faixasEntrega) || faixasEntrega.length === 0) return;
+      el.textContent = faixasEntrega
+        .map(f => `${f.ateKm}km: ${formatarMoeda(Number(f.taxa))}`)
+        .join(" • ");
+    }
 
     function aplicarDadosLoja() {
       document.title = `${LOJA.nome} | Cardápio Digital`;
@@ -651,7 +577,7 @@
       document.getElementById("loja-rodape").innerHTML = `
         <strong>${LOJA.nome}</strong> • ${LOJA.enderecoCompleto}<br>
         ${LOJA.obsRodape}<br>
-        <em>by Hokage Enterprise • Cardápio Digital</em>
+        <em>Cardápio Digital</em>
       `;
 
       const logoEl = document.getElementById("loja-logo");
@@ -670,11 +596,50 @@
         }
       }
 
+      atualizarResumoFaixas();
       atualizarStatusLoja();
     }
 
+    async function carregarCardapioBackend() {
+      if (!LOJA.apiUrl) return;
+      try {
+        const base = LOJA.apiUrl.trim().replace(/\/+$/, "");
+        const res = await fetch(`${base}/api/cardapio`, {
+          signal: AbortSignal.timeout(8000)
+        });
+        if (!res.ok) return;
+        const data = await res.json();
+
+        if (data.loja) {
+          if (data.loja.nome) LOJA.nome = data.loja.nome;
+          if (data.loja.whatsapp) LOJA.whatsapp = data.loja.whatsapp;
+          if (data.loja.raioMaximoKm) LOJA.raioMaximoKm = Number(data.loja.raioMaximoKm);
+          if (data.loja.bairro || data.loja.cidade) {
+            const localTexto = [data.loja.bairro, data.loja.cidade].filter(Boolean).join(", ");
+            if (localTexto) LOJA.enderecoCurto = `📍 ${localTexto}`;
+          }
+        }
+
+        if (Array.isArray(data.faixasEntrega) && data.faixasEntrega.length > 0) {
+          faixasEntrega = data.faixasEntrega;
+        }
+
+        if (Array.isArray(data.produtos)) {
+          produtos = data.produtos
+            .filter(p => p.ativo !== false)
+            .map(normalizarProduto);
+        }
+
+        aplicarDadosLoja();
+        renderizarAbas();
+        renderizarMenu();
+      } catch {
+        // Mantém fallback local se o servidor estiver dormindo ou inacessível
+      }
+    }
+
     function formatarMoeda(valor) {
-      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+      return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
     function trocarAba(chave) {
@@ -702,8 +667,11 @@
       const padrao = criarIconePadrao(cat.emoji);
 
       const cardsHtml = itensCat.map(p => {
-        const qtd = carrinho[p.id] || 0;
+        const qtd = getQtdItem(p.id);
         const srcFoto = resolverImagem(p.arquivoImagem, cat.emoji);
+        const precoMedio = p.tamanhos?.medio ?? 0;
+        const precoBig = p.tamanhos?.big ?? precoMedio;
+        const mesmoPreco = Number(precoMedio) === Number(precoBig);
 
         return `
           <div class="item-card">
@@ -717,12 +685,30 @@
               ${p.destaque ? `<span class="tag-destaque">${p.destaque}</span>` : ''}
               <h3>${p.nome}</h3>
               <p>${p.desc}</p>
-              <div class="price">${formatarMoeda(p.preco)}</div>
+              <div class="price-line">
+                ${mesmoPreco
+                  ? `${formatarMoeda(precoMedio)}`
+                  : `Médio: ${formatarMoeda(precoMedio)} • Big: ${formatarMoeda(precoBig)}`
+                }
+              </div>
             </div>
-            <div class="qty-control">
-              <button type="button" class="qty-btn minus" onclick="alterarQtd(${p.id}, -1)">-</button>
-              <span class="qty-val">${qtd}</span>
-              <button type="button" class="qty-btn" onclick="alterarQtd(${p.id}, 1)">+</button>
+            <div class="size-controls">
+              <div class="size-row">
+                <span class="size-label">Médio</span>
+                <div class="qty-control">
+                  <button type="button" class="qty-btn minus" onclick="alterarQtd('${p.id}', 'medio', -1)">-</button>
+                  <span class="qty-val">${qtd.medio}</span>
+                  <button type="button" class="qty-btn" onclick="alterarQtd('${p.id}', 'medio', 1)">+</button>
+                </div>
+              </div>
+              <div class="size-row">
+                <span class="size-label">Big</span>
+                <div class="qty-control">
+                  <button type="button" class="qty-btn minus" onclick="alterarQtd('${p.id}', 'big', -1)">-</button>
+                  <span class="qty-val">${qtd.big}</span>
+                  <button type="button" class="qty-btn" onclick="alterarQtd('${p.id}', 'big', 1)">+</button>
+                </div>
+              </div>
             </div>
           </div>
         `;
@@ -733,14 +719,16 @@
           <span>${cat.titulo}</span>
           <span class="section-count">${itensCat.length} opções</span>
         </div>
-        ${cardsHtml}
+        ${cardsHtml || '<p style="font-size:13px;color:var(--muted);">Nenhum item disponível nesta categoria no momento.</p>'}
       `;
 
       atualizarTotal();
     }
 
-    function alterarQtd(id, delta) {
-      carrinho[id] = Math.max(0, (carrinho[id] || 0) + delta);
+    function alterarQtd(id, tamanho, delta) {
+      const atual = getQtdItem(id);
+      const novoValor = Math.max(0, (atual[tamanho] || 0) + delta);
+      carrinho[id] = { ...atual, [tamanho]: novoValor };
       renderizarMenu();
     }
 
@@ -748,9 +736,10 @@
       let total = 0;
       let totalItens = 0;
       produtos.forEach(p => {
-        const qtd = carrinho[p.id] || 0;
-        total += p.preco * qtd;
-        totalItens += qtd;
+        const qtd = getQtdItem(p.id);
+        total += (p.tamanhos?.medio ?? 0) * qtd.medio;
+        total += (p.tamanhos?.big ?? 0) * qtd.big;
+        totalItens += qtd.medio + qtd.big;
       });
       document.getElementById('total-valor').innerText = formatarMoeda(total);
       document.getElementById('btn-enviar').disabled = totalItens === 0;
@@ -762,8 +751,8 @@
     }
 
     function enviarWhatsApp() {
-      const nome = document.getElementById('cliente-nome').value.trim() || "Adriano";
-      const telefone = document.getElementById('cliente-telefone').value.trim() || "99 999999999";
+      const nome = document.getElementById('cliente-nome').value.trim() || "Cliente";
+      const telefone = document.getElementById('cliente-telefone').value.trim() || "Não informado";
       const tipo = document.getElementById('tipo-entrega').value;
       const endereco = document.getElementById('cliente-endereco').value.trim();
       const pagamento = document.getElementById('forma-pagamento').value;
@@ -779,7 +768,7 @@
       const ehEntrega = tipo.includes('Entrega');
       const statusLoja = verificarLojaAberta(agora);
 
-      let mensagem = `Olá, gostaria de informações sobre o status do meu pedido:\n\n`;
+      let mensagem = `Olá, gostaria de fazer um pedido:\n\n`;
       mensagem += `*Pedido Cardápio Digital* - _${LOJA.nome.toUpperCase()}_\n`;
       mensagem += `---------------------------------------\n\n`;
 
@@ -789,11 +778,18 @@
 
       let subtotal = 0;
       produtos.forEach(p => {
-        const qtd = carrinho[p.id] || 0;
-        if (qtd > 0) {
-          const itemTotal = p.preco * qtd;
+        const qtd = getQtdItem(p.id);
+        if (qtd.medio > 0) {
+          const preco = p.tamanhos?.medio ?? 0;
+          const itemTotal = preco * qtd.medio;
           subtotal += itemTotal;
-          mensagem += `*${qtd}x ${p.nome.toUpperCase()} ${formatarMoeda(itemTotal)}*\n`;
+          mensagem += `*${qtd.medio}x ${p.nome.toUpperCase()} (MÉDIO) ${formatarMoeda(itemTotal)}*\n`;
+        }
+        if (qtd.big > 0) {
+          const preco = p.tamanhos?.big ?? 0;
+          const itemTotal = preco * qtd.big;
+          subtotal += itemTotal;
+          mensagem += `*${qtd.big}x ${p.nome.toUpperCase()} (BIG) ${formatarMoeda(itemTotal)}*\n`;
         }
       });
 
@@ -803,7 +799,7 @@
 
       mensagem += `\n*Subtotal:* ${formatarMoeda(subtotal)}\n`;
       if (ehEntrega) {
-        mensagem += `*Taxa de entrega*: a calcular\n`;
+        mensagem += `*Taxa de entrega*: a calcular (até ${LOJA.raioMaximoKm} km)\n`;
         mensagem += `*Total: ${formatarMoeda(subtotal)}* (+ taxa de entrega)\n\n`;
       } else {
         mensagem += `*Taxa de entrega*: R$ 0,00 (Retirada no local)\n`;
@@ -838,6 +834,7 @@
     aplicarDadosLoja();
     renderizarAbas();
     renderizarMenu();
+    carregarCardapioBackend();
     setInterval(atualizarStatusLoja, 30000);
   </script>
 </body>
