@@ -22,6 +22,17 @@ const DEFAULT_ORIGIN = {
 app.use(cors());
 app.use(express.json({ limit: '2mb' }));
 
+// Garante resposta limpa ao preflight (OPTIONS) e cabeçalhos CORS
+app.use((req, res, next) => {
+  res.header('Access-Control-Allow-Origin', '*');
+  res.header('Access-Control-Allow-Methods', 'GET,POST,PUT,PATCH,DELETE,OPTIONS');
+  res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization');
+  if (req.method === 'OPTIONS') {
+    return res.sendStatus(204);
+  }
+  next();
+});
+
 const DEFAULT_DB = {
   loja: {
     nome: 'Pastel do Glória',
@@ -196,30 +207,36 @@ function haversineKm(lat1, lon1, lat2, lon2) {
 }
 
 async function geocodeEnderecoPortoAlegre(endereco) {
-  const query = `${endereco}, Porto Alegre, Rio Grande do Sul, Brasil`;
-  const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`;
+  const tentativas = [
+    `${endereco}, Porto Alegre, Rio Grande do Sul, Brasil`,
+    `${endereco}, Porto Alegre, RS`
+  ];
 
-  const response = await fetch(url, {
-    headers: {
-      'User-Agent': 'PastelDoGloriaApp/1.0 (contato@pasteldogloria.local)',
-      'Accept-Language': 'pt-BR'
+  for (const query of tentativas) {
+    const url = `https://nominatim.openstreetmap.org/search?format=json&limit=1&q=${encodeURIComponent(query)}`;
+    const response = await fetch(url, {
+      headers: {
+        'User-Agent': 'PastelDoGloriaApp/1.0 (contato@pasteldogloria.local)',
+        'Accept-Language': 'pt-BR'
+      },
+      signal: AbortSignal.timeout(8000)
+    });
+
+    if (!response.ok) {
+      continue;
     }
-  });
 
-  if (!response.ok) {
-    throw new Error('Falha ao consultar serviço de geocodificação.');
+    const results = await response.json();
+    if (Array.isArray(results) && results.length > 0) {
+      return {
+        lat: parseFloat(results[0].lat),
+        lng: parseFloat(results[0].lon),
+        displayName: results[0].display_name
+      };
+    }
   }
 
-  const results = await response.json();
-  if (!Array.isArray(results) || results.length === 0) {
-    return null;
-  }
-
-  return {
-    lat: parseFloat(results[0].lat),
-    lng: parseFloat(results[0].lon),
-    displayName: results[0].display_name
-  };
+  return null;
 }
 
 function calcularTaxaPorDistancia(distanciaKm, faixas, raioMax = 5) {
