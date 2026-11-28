@@ -67,7 +67,7 @@
         Entre para pausar/ativar itens na hora, editar preços, tamanhos e entrega até 5 km.
       </p>
       <label for="api-url">URL do Backend (API)</label>
-      <input type="text" id="api-url" value="http://localhost:3001">
+      <input type="text" id="api-url" value="https://www.pastel-do-glo-ria.onrender.com">
 
       <label for="login-user">Usuário</label>
       <input type="text" id="login-user" value="gloria">
@@ -103,7 +103,7 @@
         <label for="tempo-entrega-input">Tempo estimado de entrega</label>
         <input type="text" id="tempo-entrega-input" placeholder="Ex: de 45 minutos a 70 minutos">
 
-        <label>Valores por distância (em R\$)</label>
+        <label>Valores por distância (em R$)</label>
         <div class="km-grid">
           <div><label for="km-1">Até 1 km</label><input type="number" step="0.5" min="0" id="km-1"></div>
           <div><label for="km-2">Até 2 km</label><input type="number" step="0.5" min="0" id="km-2"></div>
@@ -146,8 +146,8 @@
           <span>Trabalha com 2 tamanhos (Médio e Big)</span>
         </label>
         <div class="grid-2" id="box-tamanhos-novo" style="display: none;">
-          <div><label for="novo-medio">Preço Médio (R\$)</label><input type="number" step="0.5" min="0" id="novo-medio" value="20"></div>
-          <div><label for="novo-big">Preço Big (R\$)</label><input type="number" step="0.5" min="0" id="novo-big" value="27"></div>
+          <div><label for="novo-medio">Preço Médio (R$)</label><input type="number" step="0.5" min="0" id="novo-medio" value="20"></div>
+          <div><label for="novo-big">Preço Big (R$)</label><input type="number" step="0.5" min="0" id="novo-big" value="27"></div>
         </div>
         <div style="margin-top: 12px;">
           <button class="btn-primary" onclick="criarProduto()">Adicionar Item</button>
@@ -163,8 +163,10 @@
   </div>
 
   <script>
+    const DEFAULT_API = "https://www.pastel-do-glo-ria.onrender.com";
     let token = localStorage.getItem("pg_token") || "";
-    let apiBase = localStorage.getItem("pg_api") || "http://localhost:3001";
+    let apiBase = localStorage.getItem("pg_api") || DEFAULT_API;
+    if (apiBase.includes("localhost:3001")) apiBase = DEFAULT_API;
     document.getElementById("api-url").value = apiBase;
 
     function toggleCamposTamanho(prefixo) {
@@ -173,7 +175,7 @@
     }
 
     async function fazerLogin() {
-      apiBase = document.getElementById("api-url").value.trim().replace(/\/+\$/, "");
+      apiBase = document.getElementById("api-url").value.trim().replace(/\/+$/, "");
       const usuario = document.getElementById("login-user").value.trim();
       const senha = document.getElementById("login-pass").value;
       const errEl = document.getElementById("login-erro");
