@@ -14,6 +14,8 @@
       --text: #1f2937;
       --muted: #6b7280;
       --whatsapp: #25d366;
+      --open: #22c55e;
+      --closed: #ef4444;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif; }
@@ -34,9 +36,85 @@
       font-weight: 800;
       padding: 4px 12px;
       border-radius: 20px;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
       text-transform: uppercase;
     }
+
+    .status-wrap {
+      display: flex;
+      justify-content: center;
+      margin-bottom: 12px;
+    }
+    .status-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 14px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.3px;
+      border: 1px solid rgba(255,255,255,0.22);
+      background: rgba(0, 0, 0, 0.35);
+      color: #fff;
+    }
+    .status-pill.aberta {
+      background: rgba(34, 197, 94, 0.18);
+      border-color: rgba(74, 222, 128, 0.55);
+      color: #bbf7d0;
+    }
+    .status-pill.fechada {
+      background: rgba(239, 68, 68, 0.2);
+      border-color: rgba(248, 113, 113, 0.55);
+      color: #fecaca;
+    }
+    .status-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      flex-shrink: 0;
+    }
+    .status-pill.aberta .status-dot {
+      background: var(--open);
+      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.8);
+      animation: pulse-green 1.6s infinite;
+    }
+    .status-pill.fechada .status-dot {
+      background: var(--closed);
+      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55);
+      animation: pulse-red 2.2s infinite;
+    }
+
+    @keyframes pulse-green {
+      0% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.85);
+      }
+      70% {
+        transform: scale(1.08);
+        box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+      }
+      100% {
+        transform: scale(0.95);
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+      }
+    }
+
+    @keyframes pulse-red {
+      0% {
+        transform: scale(0.96);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55);
+      }
+      70% {
+        transform: scale(1.04);
+        box-shadow: 0 0 0 6px rgba(239, 68, 68, 0);
+      }
+      100% {
+        transform: scale(0.96);
+        box-shadow: 0 0 0 0 rgba(239, 68, 68, 0);
+      }
+    }
+
     .header-brand {
       display: flex;
       flex-direction: column;
@@ -241,6 +319,12 @@
 
   <header>
     <div class="badge-top" id="loja-badge">⭐ 5,0 no Google • Delivery Oficial</div>
+    <div class="status-wrap">
+      <div class="status-pill fechada" id="status-loja" role="status" aria-live="polite">
+        <span class="status-dot" aria-hidden="true"></span>
+        <span id="status-loja-texto">Verificando horário...</span>
+      </div>
+    </div>
     <div class="header-brand">
       <img
         id="loja-logo"
@@ -262,8 +346,8 @@
 
   <div class="container">
     <div class="promo-banner">
-      🔥 <strong>Peça direto por aqui sem taxas de aplicativo!</strong><br>
-      Escolha por aba e envie direto para o nosso WhatsApp.
+      🔥 <strong>Destaque sua promoção aqui!</strong><br>
+      Expor o valor da Tele-entrega por Exemplo.
     </div>
 
     <!-- Abas de navegação: mostra apenas a categoria escolhida -->
@@ -275,7 +359,10 @@
     <div class="checkout-box">
       <div class="section-title" style="margin-top: 0;">🛵 Dados para Entrega / Retirada</div>
       <label for="cliente-nome">Seu Nome</label>
-      <input type="text" id="cliente-nome" placeholder="Ex: João Silva">
+      <input type="text" id="cliente-nome" placeholder="Ex: Adriano">
+
+      <label for="cliente-telefone">Seu Telefone / WhatsApp</label>
+      <input type="tel" id="cliente-telefone" placeholder="Ex: 99 999999999">
 
       <label for="tipo-entrega">Como deseja receber?</label>
       <select id="tipo-entrega" onchange="toggleEndereco()">
@@ -310,7 +397,7 @@
   <div class="bottom-bar">
     <div class="total-box">
       <span>Total do Pedido</span>
-      <strong id="total-valor">R$ 0,00</strong>
+      <strong id="total-valor">R\$ 0,00</strong>
     </div>
     <button class="btn-whats" id="btn-enviar" onclick="enviarWhatsApp()" disabled>
       Enviar no WhatsApp
@@ -328,9 +415,60 @@
       enderecoCurto: "📍 R. Manduca Nunes, 160 - Glória, POA",
       enderecoCompleto: "R. Manduca Nunes, 160 - Glória, Porto Alegre - RS",
       horario: "🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)",
+      tempoEntrega: "de 45 minutos a 70 minutos",
       obsRodape: "Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC",
-      pastaImagens: "" // Vazio porque as imagens estão na raiz do repo (ou use "img/" se criar a pasta)
+      pastaImagens: "", // Vazio porque as imagens estão na raiz do repo (ou use "img/" se criar a pasta)
+      // Agenda semanal: 0 = Dom, 1 = Seg, 2 = Ter (null = fechado), 3 = Qua, 4 = Qui, 5 = Sex, 6 = Sáb
+      // Horários em minutos desde 00:00 (ex: 18h = 1080, 19h = 1140, 23:30 = 1410)
+      agenda: {
+        0: { abre: 18 * 60, fecha: 23 * 60 + 30 },
+        1: { abre: 18 * 60, fecha: 23 * 60 + 30 },
+        2: null,
+        3: { abre: 18 * 60, fecha: 23 * 60 + 30 },
+        4: { abre: 19 * 60, fecha: 23 * 60 + 30 },
+        5: { abre: 18 * 60, fecha: 23 * 60 + 30 },
+        6: { abre: 18 * 60, fecha: 23 * 60 + 30 }
+      }
     };
+
+    function verificarLojaAberta(dataReferencia = new Date()) {
+      const dia = dataReferencia.getDay();
+      const minutosAtuais = dataReferencia.getHours() * 60 + dataReferencia.getMinutes();
+      const faixa = LOJA.agenda ? LOJA.agenda[dia] : null;
+
+      if (!faixa) {
+        return {
+          aberta: false,
+          texto: dia === 2 ? "Loja fechada • Terça não abre" : "Loja fechada agora"
+        };
+      }
+
+      if (minutosAtuais >= faixa.abre && minutosAtuais <= faixa.fecha) {
+        return {
+          aberta: true,
+          texto: "Loja aberta agora"
+        };
+      }
+
+      const horaAbertura = `${String(Math.floor(faixa.abre / 60)).padStart(2, "0")}:${String(faixa.abre % 60).padStart(2, "0")}`;
+      return {
+        aberta: false,
+        texto: minutosAtuais < faixa.abre
+          ? `Loja fechada • Abre às ${horaAbertura}`
+          : "Loja fechada agora"
+      };
+    }
+
+    function atualizarStatusLoja() {
+      const pill = document.getElementById("status-loja");
+      const textoEl = document.getElementById("status-loja-texto");
+      if (!pill || !textoEl) return;
+
+      const status = verificarLojaAberta(new Date());
+      textoEl.textContent = status.texto;
+      pill.classList.toggle("aberta", status.aberta);
+      pill.classList.toggle("fechada", !status.aberta);
+    }
 
     function criarIconePadrao(emoji) {
       return "data:image/svg+xml;utf8," + encodeURIComponent(`
@@ -371,7 +509,7 @@
         categoria: "salgados",
         nome: "Pastel de Camarão Especial",
         desc: "O destaque da casa! Camarão bem temperado, cremoso e recheado da ponta ao meio.",
-        preco: 32.00,
+        preco: 0.00,
         destaque: "⭐ Mais Elogiado",
         arquivoImagem: "camarao-especial.jpeg"
       },
@@ -380,7 +518,7 @@
         categoria: "salgados",
         nome: "Carne de Panela com Mussarela e Cheddar",
         desc: "Carne de panela desfiada suculenta com muito queijo mussarela e cheddar derretido.",
-        preco: 28.00,
+        preco: 0.00,
         destaque: "🔥 Campeão de Vendas",
         arquivoImagem: "carne-panela.jpg"
       },
@@ -389,7 +527,7 @@
         categoria: "salgados",
         nome: "Carne Moída com Queijo e Ovo",
         desc: "Clássico tradicional muito recheado com carne temperada, mussarela e ovo picado.",
-        preco: 24.00,
+        preco: 0.00,
         destaque: "Tradicional",
         arquivoImagem: "carne-moida-queijo-ovo.jpg"
       },
@@ -398,7 +536,7 @@
         categoria: "salgados",
         nome: "Frango Cremoso com Catupiry",
         desc: "Peito de frango desfiado temperado na casa com camada generosa de Catupiry.",
-        preco: 25.00,
+        preco: 0.00,
         destaque: "",
         arquivoImagem: "frango-catupiry.jpg"
       },
@@ -407,7 +545,7 @@
         categoria: "salgados",
         nome: "Calabresa com Cheddar",
         desc: "Calabresa fatiada frita na hora com cheddar cremoso.",
-        preco: 24.00,
+        preco: 0.00,
         destaque: "",
         arquivoImagem: "calabresa-cheddar.jpg"
       },
@@ -416,7 +554,7 @@
         categoria: "salgados",
         nome: "Quatro Queijos",
         desc: "Mussarela, provolone, parmesão e requeijão cremoso derretidos na hora.",
-        preco: 25.00,
+        preco: 0.00,
         destaque: "",
         arquivoImagem: "quatro-queijos.jpg"
       },
@@ -427,7 +565,7 @@
         categoria: "doces",
         nome: "Nutella com Banana",
         desc: "Massa crocante recheada com creme de avelã Nutella original e rodelas de banana.",
-        preco: 26.00,
+        preco: 0.00,
         destaque: "🍫 Favorito",
         arquivoImagem: "nutella-banana.jpg"
       },
@@ -436,7 +574,7 @@
         categoria: "doces",
         nome: "M&M's",
         desc: "Confetes de chocolate frescos sortidos.",
-        preco: 26.00,
+        preco: 0.00,
         destaque: "",
         arquivoImagem: "mms.jpg"
       },
@@ -445,7 +583,7 @@
         categoria: "doces",
         nome: "Mumu tradicional",
         desc: "Tradicional mumu cremoso derretido.",
-        preco: 22.00,
+        preco: 0.00,
         destaque: "",
         arquivoImagem: "doce-mumu.jpg"
       },
@@ -454,7 +592,7 @@
         categoria: "doces",
         nome: "Chocolate com Coco",
         desc: "Chocolate cremoso derretido com coco ralado.",
-        preco: 26.00,
+        preco: 0.00,
         destaque: "",
         arquivoImagem: "chocolate-coco.jpg"
       },
@@ -463,7 +601,7 @@
         categoria: "doces",
         nome: "Ouro Branco",
         desc: "Recheio cremoso com bombom Ouro Branco.",
-        preco: 26.00,
+        preco: 0.00,
         destaque: "",
         arquivoImagem: "ouro-branco.jpg"
       },
@@ -474,7 +612,7 @@
         categoria: "porcoes",
         nome: "Porção de Batata Frita Crocante (400g)",
         desc: "Batatas sequinhas e crocantes acompanhadas de molho da casa.",
-        preco: 22.00,
+        preco: 0.00,
         destaque: "",
         arquivoImagem: "batata-frita.jpg"
       },
@@ -483,7 +621,7 @@
         categoria: "porcoes",
         nome: "Batata Frita com Cheddar e Bacon (450g)",
         desc: "Porção generosa coberta com cheddar cremoso e cubos de bacon crocante.",
-        preco: 29.00,
+        preco: 0.00,
         destaque: "🔥 Para Compartilhar",
         arquivoImagem: "batata-cheddar-bacon.jpg"
       },
@@ -492,7 +630,7 @@
         categoria: "porcoes",
         nome: "Porção de Mini Pastéis Mistos (12 unid.)",
         desc: "Mix de mini pastéis de carne, queijo e frango fritos na hora.",
-        preco: 28.00,
+        preco: 0.00,
         destaque: "",
         arquivoImagem: "mini-pasteis.jpg"
       },
@@ -503,7 +641,7 @@
         categoria: "bebidas",
         nome: "Coca-Cola Lata 350ml",
         desc: "Bem gelada (Original ou Zero).",
-        preco: 6.50,
+        preco: 0.00,
         destaque: "",
         arquivoImagem: "coca-lata.jpg"
       },
@@ -512,7 +650,7 @@
         categoria: "bebidas",
         nome: "Guaraná Antarctica Lata 350ml",
         desc: "Bem gelado.",
-        preco: 6.00,
+        preco: 0.00,
         destaque: "",
         arquivoImagem: "guarana-lata.jpg"
       },
@@ -521,185 +659,4 @@
         categoria: "bebidas",
         nome: "Refrigerante 2 Litros",
         desc: "Coca-Cola ou Guaraná Antarctica (informe o sabor nas observações).",
-        preco: 14.00,
-        destaque: "Ideal para Família",
-        arquivoImagem: "refri-2l.jpg"
-      },
-      {
-        id: 16,
-        categoria: "bebidas",
-        nome: "Água Mineral 500ml",
-        desc: "Sem gás ou com gás.",
-        preco: 4.50,
-        destaque: "",
-        arquivoImagem: "agua-500ml.jpg"
-      }
-    ];
-
-    const carrinho = {};
-
-    function aplicarDadosLoja() {
-      document.title = `${LOJA.nome} | Cardápio Digital`;
-      document.getElementById("loja-badge").textContent = LOJA.badge;
-      document.getElementById("loja-nome").textContent = LOJA.nome;
-      document.getElementById("loja-slogan").textContent = LOJA.slogan;
-      document.getElementById("loja-endereco").textContent = LOJA.enderecoCurto;
-      document.getElementById("loja-horario").textContent = LOJA.horario;
-      document.getElementById("opcao-retirada").textContent = `Retirada no Local (${LOJA.enderecoCompleto})`;
-      document.getElementById("loja-rodape").innerHTML = `
-        <strong>${LOJA.nome}</strong> • ${LOJA.enderecoCompleto}<br>
-        ${LOJA.obsRodape}<br>
-        <em>Cardápio Digital</em>
-      `;
-
-      const logoEl = document.getElementById("loja-logo");
-      if (logoEl) {
-        logoEl.alt = `Logo ${LOJA.nome}`;
-        if (LOJA.logoArquivo && LOJA.logoArquivo.trim()) {
-          logoEl.onerror = function () {
-            this.style.display = "none";
-          };
-          logoEl.onload = function () {
-            this.style.display = "block";
-          };
-          logoEl.src = resolverImagem(LOJA.logoArquivo, "");
-        } else {
-          logoEl.style.display = "none";
-        }
-      }
-    }
-
-    function formatarMoeda(valor) {
-      return valor.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-    }
-
-    function trocarAba(chave) {
-      categoriaAtiva = chave;
-      renderizarAbas();
-      renderizarMenu();
-    }
-
-    function renderizarAbas() {
-      const tabsBar = document.getElementById('tabs-bar');
-      tabsBar.innerHTML = categorias.map(cat => {
-        const ativa = cat.chave === categoriaAtiva ? 'active' : '';
-        return `
-          <button type="button" class="tab-btn ${ativa}" onclick="trocarAba('${cat.chave}')">
-            ${cat.titulo}
-          </button>
-        `;
-      }).join('');
-    }
-
-    function renderizarMenu() {
-      const container = document.getElementById('menu-container');
-      const cat = categorias.find(c => c.chave === categoriaAtiva) || categorias[0];
-      const itensCat = produtos.filter(p => p.categoria === cat.chave);
-      const padrao = criarIconePadrao(cat.emoji);
-
-      const cardsHtml = itensCat.map(p => {
-        const qtd = carrinho[p.id] || 0;
-        const srcFoto = resolverImagem(p.arquivoImagem, cat.emoji);
-
-        return `
-          <div class="item-card">
-            <img
-              class="item-thumb"
-              src="${srcFoto}"
-              alt="${p.nome}"
-              onerror="this.onerror=null;this.src='${padrao}';"
-            >
-            <div class="item-info">
-              ${p.destaque ? `<span class="tag-destaque">${p.destaque}</span>` : ''}
-              <h3>${p.nome}</h3>
-              <p>${p.desc}</p>
-              <div class="price">${formatarMoeda(p.preco)}</div>
-            </div>
-            <div class="qty-control">
-              <button type="button" class="qty-btn minus" onclick="alterarQtd(${p.id}, -1)">-</button>
-              <span class="qty-val">${qtd}</span>
-              <button type="button" class="qty-btn" onclick="alterarQtd(${p.id}, 1)">+</button>
-            </div>
-          </div>
-        `;
-      }).join('');
-
-      container.innerHTML = `
-        <div class="section-title">
-          <span>${cat.titulo}</span>
-          <span class="section-count">${itensCat.length} opções</span>
-        </div>
-        ${cardsHtml}
-      `;
-
-      atualizarTotal();
-    }
-
-    function alterarQtd(id, delta) {
-      carrinho[id] = Math.max(0, (carrinho[id] || 0) + delta);
-      renderizarMenu();
-    }
-
-    function atualizarTotal() {
-      let total = 0;
-      let totalItens = 0;
-      produtos.forEach(p => {
-        const qtd = carrinho[p.id] || 0;
-        total += p.preco * qtd;
-        totalItens += qtd;
-      });
-      document.getElementById('total-valor').innerText = formatarMoeda(total);
-      document.getElementById('btn-enviar').disabled = totalItens === 0;
-    }
-
-    function toggleEndereco() {
-      const tipo = document.getElementById('tipo-entrega').value;
-      document.getElementById('box-endereco').style.display = tipo.includes('Entrega') ? 'block' : 'none';
-    }
-
-    function enviarWhatsApp() {
-      const nome = document.getElementById('cliente-nome').value.trim() || "Cliente";
-      const tipo = document.getElementById('tipo-entrega').value;
-      const endereco = document.getElementById('cliente-endereco').value.trim();
-      const pagamento = document.getElementById('forma-pagamento').value;
-      const obs = document.getElementById('cliente-obs').value.trim();
-
-      if (tipo.includes('Entrega') && !endereco) {
-        alert("Por favor, informe o endereço para entrega.");
-        return;
-      }
-
-      let mensagem = `*NOVO PEDIDO - ${LOJA.nome.toUpperCase()}*\n\n`;
-      mensagem += `*Cliente:* ${nome}\n`;
-      mensagem += `*Recebimento:* ${tipo}\n`;
-      if (tipo.includes('Entrega')) {
-        mensagem += `*Endereço:* ${endereco}\n`;
-      }
-      mensagem += `*Pagamento:* ${pagamento}\n`;
-      if (obs) {
-        mensagem += `*Observações:* ${obs}\n`;
-      }
-      mensagem += `\n*ITENS DO PEDIDO:*\n`;
-
-      let total = 0;
-      produtos.forEach(p => {
-        const qtd = carrinho[p.id] || 0;
-        if (qtd > 0) {
-          const sub = p.preco * qtd;
-          total += sub;
-          mensagem += `• ${qtd}x ${p.nome} (${formatarMoeda(sub)})\n`;
-        }
-      });
-
-      mensagem += `\n*Total Estimado:* ${formatarMoeda(total)} (+ taxa de entrega, se houver)`;
-
-      const url = `https://wa.me/${LOJA.whatsapp}?text=${encodeURIComponent(mensagem)}`;
-      window.open(url, '_blank');
-    }
-
-    aplicarDadosLoja();
-    renderizarAbas();
-    renderizarMenu();
-  </script>
-</body>
-</html>
+        preco:
