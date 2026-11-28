@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Painel da Loja | Pastel do Glória</title>
+  <style>
+    :root {
+      --primary: #d9381e;
+      --accent: #f59e0b;
+      --bg: #f3f4f6;
+      --card: #ffffff;
+      --text: #111827;
+      --muted: #6b7280;
+      --ok: #16a34a;
+      --off: #dc2626;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', Roboto, Arial, sans-serif; }
+    body { background: var(--bg); color: var(--text); padding: 16px; padding-bottom: 60px; }
+    .box { max-width: 780px; margin: 0 auto; }
+    .card { background: var(--card); border-radius: 12px; padding: 16px; margin-bottom: 14px; box-shadow: 0 2px 6px rgba(0,0,0,0.06); }
+    h1 { font-size: 20px; margin-bottom: 6px; }
+    h2 { font-size: 16px; margin-bottom: 12px; }
+    label { display: block; font-size: 12px; font-weight: 700; margin: 8px 0 4px; color: #374151; }
+    input, select, textarea {
+      width: 100%; padding: 9px 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;
+    }
+    button {
+      border: none; border-radius: 8px; padding: 10px 14px; font-weight: 700; cursor: pointer; font-size: 13px;
+    }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-save { background: #111827; color: #fff; }
+    .btn-logout { background: #e5e7eb; color: #111827; }
+
+    .top-bar { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+    .km-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; margin-top: 8px; }
+    @media (max-width: 600px) { .km-grid { grid-template-columns: repeat(2, 1fr); } }
+
+    .item-row { border: 1px solid #e5e7eb; border-radius: 10px; padding: 12px; margin-bottom: 12px; background: #fafafa; }
+    .item-top { display: flex; justify-content: space-between; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+    /* Botão play/pause estilo iFood */
+    .switch-wrap { display: inline-flex; align-items: center; gap: 8px; font-size: 13px; font-weight: 700; }
+    .switch { position: relative; display: inline-block; width: 46px; height: 25px; }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .slider {
+      position: absolute; inset: 0; background-color: var(--off); transition: .2s; border-radius: 999px;
+    }
+    .slider:before {
+      position: absolute; content: ""; height: 19px; width: 19px; left: 3px; bottom: 3px;
+      background-color: white; transition: .2s; border-radius: 50%;
+    }
+    input:checked + .slider { background-color: var(--ok); }
+    input:checked + .slider:before { transform: translateX(21px); }
+
+    .grid-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+    @media (max-width: 600px) { .grid-2 { grid-template-columns: 1fr; } }
+    .msg { font-size: 13px; margin-top: 8px; font-weight: 600; color: var(--ok); }
+    .err { color: var(--off); }
+  </style>
+</head>
+<body>
+  <div class="box">
+    <div id="login-screen" class="card">
+      <h1>🔐 Painel Pastel do Glória</h1>
+      <p style="font-size: 13px; color: var(--muted); margin-bottom: 12px;">
+        Entre para pausar/ativar itens na hora, editar preços, tamanhos e entrega até 5 km.
+      </p>
+      <label for="api-url">URL do Backend (API)</label>
+      <input type="text" id="api-url" value="http://localhost:3001">
+
+      <label for="login-user">Usuário</label>
+      <input type="text" id="login-user" value="gloria">
+
+      <label for="login-pass">Senha</label>
+      <input type="password" id="login-pass" placeholder="Digite a senha">
+
+      <div style="margin-top: 12px;">
+        <button class="btn-primary" onclick="fazerLogin()">Entrar no Painel</button>
+      </div>
+      <div id="login-erro" class="msg err"></div>
+    </div>
+
+    <div id="painel-screen" style="display: none;">
+      <div class="card top-bar">
+        <div>
+          <h1>🥟 Painel • Pastel do Glória</h1>
+          <span style="font-size: 12px; color: var(--muted);">Pausar item, editar preço/foto/descrição e entrega até 5 km</span>
+        </div>
+        <button class="btn-logout" onclick="sair()">Sair</button>
+      </div>
+
+      <div class="card">
+        <h2>🛵 Entrega por Distância (até 5 km)</h2>
+        <label class="switch-wrap" style="margin-bottom: 8px;">
+          <label class="switch">
+            <input type="checkbox" id="entrega-ativa" checked>
+            <span class="slider"></span>
+          </label>
+          <span>Cálculo de entrega ativo</span>
+        </label>
+
+        <label for="tempo-entrega-input">Tempo estimado de entrega</label>
+        <input type="text" id="tempo-entrega-input" placeholder="Ex: de 45 minutos a 70 minutos">
+
+        <label>Valores por distância (em R\$)</label>
+        <div class="km-grid">
+          <div><label for="km-1">Até 1 km</label><input type="number" step="0.5" min="0" id="km-1"></div>
+          <div><label for="km-2">Até 2 km</label><input type="number" step="0.5" min="0" id="km-2"></div>
+          <div><label for="km-3">Até 3 km</label><input type="number" step="0.5" min="0" id="km-3"></div>
+          <div><label for="km-4">Até 4 km</label><input type="number" step="0.5" min="0" id="km-4"></div>
+          <div><label for="km-5">Até 5 km</label><input type="number" step="0.5" min="0" id="km-5"></div>
+        </div>
+
+        <div style="margin-top: 12px;">
+          <button class="btn-save" onclick="salvarEntrega()">Salvar Regras de Entrega</button>
+        </div>
+        <div id="msg-entrega" class="msg"></div>
+      </div>
+
+      <div class="card">
+        <h2>➕ Novo Item</h2>
+        <div class="grid-2">
+          <div>
+            <label for="novo-cat">Categoria</label>
+            <select id="novo-cat">
+              <option value="salgados">Pastéis Salgados</option>
+              <option value="doces">Pastéis Doces</option>
+              <option value="porcoes">Porções</option>
+              <option value="bebidas">Bebidas</option>
+            </select>
+          </div>
+          <div>
+            <label for="novo-nome">Nome</label>
+            <input type="text" id="novo-nome" placeholder="Ex: Pastel de Pizza">
+          </div>
+        </div>
+        <label for="novo-desc">Descrição</label>
+        <input type="text" id="novo-desc" placeholder="Descrição do recheio">
+        <div class="grid-2">
+          <div><label for="novo-img">Arquivo ou URL da Foto</label><input type="text" id="novo-img" placeholder="pizza.jpg"></div>
+          <div><label for="novo-preco">Preço Base (se não usar tamanhos)</label><input type="number" step="0.5" min="0" id="novo-preco" value="22"></div>
+        </div>
+        <label class="switch-wrap" style="margin-top: 8px;">
+          <input type="checkbox" id="novo-tamanhos" onchange="toggleCamposTamanho('novo')">
+          <span>Trabalha com 2 tamanhos (Médio e Big)</span>
+        </label>
+        <div class="grid-2" id="box-tamanhos-novo" style="display: none;">
+          <div><label for="novo-medio">Preço Médio (R\$)</label><input type="number" step="0.5" min="0" id="novo-medio" value="20"></div>
+          <div><label for="novo-big">Preço Big (R\$)</label><input type="number" step="0.5" min="0" id="novo-big" value="27"></div>
+        </div>
+        <div style="margin-top: 12px;">
+          <button class="btn-primary" onclick="criarProduto()">Adicionar Item</button>
+        </div>
+        <div id="msg-novo" class="msg"></div>
+      </div>
+
+      <div class="card">
+        <h2>📋 Itens do Cardápio (Play / Pause rápido)</h2>
+        <div id="lista-admin"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    let token = localStorage.getItem("pg_token") || "";
+    let apiBase = localStorage.getItem("pg_api") || "http://localhost:3001";
+    document.getElementById("api-url").value = apiBase;
+
+    function toggleCamposTamanho(prefixo) {
+      const checked = document.getElementById(`${prefixo}-tamanhos`).checked;
+      document.getElementById(`box-tamanhos-${prefixo}`).style.display = checked ? "grid" : "none";
+    }
+
+    async function fazerLogin() {
+      apiBase = document.getElementById("api-url").value.trim().replace(/\/+\$/, "");
+      const usuario = document.getElementById("login-user").value.trim();
+      const senha = document.getElementById("login-pass").value;
+      const errEl = document.getElementById("login-erro");
+      errEl.textContent = "";
+
+      try {
+        const res = await fetch(`${apiBase}/api/auth/login`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ usuario, senha })
+        });
+        const data = await res.json();
+        if (!res.ok) {
+          errEl.textContent = data.erro || "Falha no login.";
+          return;
+        }
+        token = data.token;
+        localStorage.setItem("pg_token", token);
+        localStorage.setItem("pg_api", apiBase);
+        carregarPainel();
+      } catch {
+        errEl.textContent = "Não foi possível conectar ao backend.";
+      }
+    }
+
+    function sair() {
+      token = "";
+      localStorage.removeItem("pg_token");
+      document.getElementById("painel-screen").style.display = "none";
+      document.getElementById("login-screen").style.display = "block";
+    }
+
+    async function carregarPainel() {
+      const res = await fetch(`${apiBase}/api/admin/dados`, {
+        headers: { Authorization: `Bearer ${token}` }
+      });
+      if (res.status === 401) return sair();
+      const data = await res.json();
+
+      document.getElementById("login-screen").style.display = "none";
+      document.getElementById("painel-screen").style.display = "block";
+
+      document.getElementById("entrega-ativa").checked = data.loja.entregaAtiva;
+      document.getElementById("tempo-entrega-input").value = data.loja.tempoEntrega;
+      for (let km = 1; km <= 5; km++) {
+        document.getElementById(`km-${km}`).value = data.loja.tarifaKm[String(km)] ?? 0;
+      }
+
+      renderizarListaAdmin(data.produtos);
+    }
+
+    function renderizarListaAdmin(produtos) {
+      const cont = document.getElementById("lista-admin");
+      cont.innerHTML = produtos.map(p => `
+        <div class="item-row">
+          <div class="item-top">
+            <strong>#${p.id} • ${p.nome}</strong>
+            <label class="switch-wrap">
+              <span>${p.disponivel ? "Disponível (Play)" : "Pausado"}</span>
+              <label class="switch">
+                <input type="checkbox" ${p.disponivel ? "checked" : ""} onchange="alternarDisponibilidade(${p.id}, this.checked)">
+                <span class="slider"></span>
+              </label>
+            </label>
+          </div>
+
+          <div class="grid-2">
+            <div>
+              <label>Nome</label>
+              <input type="text" id="nome-${p.id}" value="${p.nome.replace(/"/g, "&quot;")}">
+            </div>
+            <div>
+              <label>Foto (arquivo ou URL)</label>
+              <input type="text" id="img-${p.id}" value="${p.imagem.replace(/"/g, "&quot;")}">
+            </div>
+          </div>
+
+          <label>Descrição</label>
+          <input type="text" id="desc-${p.id}" value="${p.descricao.replace(/"/g, "&quot;")}">
+
+          <div class="grid-2" style="margin-top: 6px;">
+            <div>
+              <label>Preço Base (R$)</label>
+              <input type="number" step="0.5" min="0" id="base-${p.id}" value="${p.precoBase}">
+            </div>
+            <div style="display:flex; align-items:flex-end; padding-bottom: 6px;">
+              <label class="switch-wrap">
+                <input type="checkbox" id="tam-${p.id}" ${p.temTamanhos ? "checked" : ""} onchange="toggleCamposTamanho('item-${p.id}')">
+                <span>2 tamanhos (Médio / Big)</span>
+              </label>
+            </div>
+          </div>
+
+          <div class="grid-2" id="box-tamanhos-item-${p.id}" style="display: ${p.temTamanhos ? "grid" : "none"};">
+            <div>
+              <label>Preço Médio (R$)</label>
+              <input type="number" step="0.5" min="0" id="medio-${p.id}" value="${p.precoMedio}">
+            </div>
+            <div>
+              <label>Preço Big (R$)</label>
+              <input type="number" step="0.5" min="0" id="big-${p.id}" value="${p.precoBig}">
+            </div>
+          </div>
+
+          <div style="margin-top: 10px;">
+            <button class="btn-save" onclick="salvarProduto(${p.id}, ${p.disponivel})">Salvar Item</button>
+            <span class="msg" id="msg-item-${p.id}" style="margin-left: 8px;"></span>
+          </div>
+        </div>
+      `).join("");
+    }
+
+    async function alternarDisponibilidade(id, disponivel) {
+      await fetch(`${apiBase}/api/admin/produtos/${id}/disponibilidade`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({ disponivel })
+      });
+      carregarPainel();
+    }
+
+    async function salvarProduto(id, disponivelAtual) {
+      const payload = {
+        nome: document.getElementById(`nome-${id}`).value.trim(),
+        imagem: document.getElementById(`img-${id}`).value.trim(),
+        descricao: document.getElementById(`desc-${id}`).value.trim(),
+        precoBase: Number(document.getElementById(`base-${id}`).value),
+        temTamanhos: document.getElementById(`tam-${id}`).checked,
+        precoMedio: Number(document.getElementById(`medio-${id}`).value),
+        precoBig: Number(document.getElementById(`big-${id}`).value),
+        disponivel: disponivelAtual
+      };
+      const res = await fetch(`${apiBase}/api/admin/produtos/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(payload)
+      });
+      const msg = document.getElementById(`msg-item-${id}`);
+      msg.textContent = res.ok ? "Salvo!" : "Erro ao salvar";
+    }
+
+    async function criarProduto() {
+      const payload = {
+        categoria: document.getElementById("novo-cat").value,
+        nome: document.getElementById("novo-nome").value.trim(),
+        descricao: document.getElementById("novo-desc").value.trim(),
+        imagem: document.getElementById("novo-img").value.trim(),
+        precoBase: Number(document.getElementById("novo-preco").value),
+        temTamanhos: document.getElementById("novo-tamanhos").checked,
+        precoMedio: Number(document.getElementById("novo-medio").value),
+        precoBig: Number(document.getElementById("novo-big").value),
+        disponivel: true
+      };
+      const res = await fetch(`${apiBase}/api/admin/produtos`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify(payload)
+      });
+      const msg = document.getElementById("msg-novo");
+      if (res.ok) {
+        msg.textContent = "Item adicionado!";
+        document.getElementById("novo-nome").value = "";
+        carregarPainel();
+      } else {
+        msg.textContent = "Preencha o nome do item.";
+      }
+    }
+
+    async function salvarEntrega() {
+      const tarifaKm = {};
+      for (let km = 1; km <= 5; km++) {
+        tarifaKm[String(km)] = Number(document.getElementById(`km-${km}`).value);
+      }
+      const res = await fetch(`${apiBase}/api/admin/entrega`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+        body: JSON.stringify({
+          entregaAtiva: document.getElementById("entrega-ativa").checked,
+          tempoEntrega: document.getElementById("tempo-entrega-input").value.trim(),
+          tarifaKm
+        })
+      });
+      document.getElementById("msg-entrega").textContent = res.ok ? "Entrega até 5 km salva!" : "Erro ao salvar.";
+    }
+
+    if (token) carregarPainel();
+  </script>
+</body>
+</html>
