@@ -40,275 +40,95 @@
       text-transform: uppercase;
     }
 
-    .status-wrap {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 12px;
-    }
+    .status-wrap { display: flex; justify-content: center; margin-bottom: 12px; }
     .status-pill {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 6px 14px;
-      border-radius: 999px;
-      font-size: 12px;
-      font-weight: 800;
-      letter-spacing: 0.3px;
-      border: 1px solid rgba(255,255,255,0.22);
-      background: rgba(0, 0, 0, 0.35);
-      color: #fff;
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 6px 14px; border-radius: 999px; font-size: 12px; font-weight: 800;
+      border: 1px solid rgba(255,255,255,0.22); background: rgba(0, 0, 0, 0.35); color: #fff;
     }
-    .status-pill.aberta {
-      background: rgba(34, 197, 94, 0.18);
-      border-color: rgba(74, 222, 128, 0.55);
-      color: #bbf7d0;
-    }
-    .status-pill.fechada {
-      background: rgba(239, 68, 68, 0.2);
-      border-color: rgba(248, 113, 113, 0.55);
-      color: #fecaca;
-    }
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      border-radius: 50%;
-      flex-shrink: 0;
-    }
-    .status-pill.aberta .status-dot {
-      background: var(--open);
-      box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.8);
-      animation: pulse-green 1.6s infinite;
-    }
-    .status-pill.fechada .status-dot {
-      background: var(--closed);
-      box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55);
-      animation: pulse-red 2.2s infinite;
-    }
+    .status-pill.aberta { background: rgba(34, 197, 94, 0.18); border-color: rgba(74, 222, 128, 0.55); color: #bbf7d0; }
+    .status-pill.fechada { background: rgba(239, 68, 68, 0.2); border-color: rgba(248, 113, 113, 0.55); color: #fecaca; }
+    .status-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+    .status-pill.aberta .status-dot { background: var(--open); }
+    .status-pill.fechada .status-dot { background: var(--closed); }
 
-    @keyframes pulse-green {
-      0% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.85); }
-      70% { transform: scale(1.08); box-shadow: 0 0 0 8px rgba(34, 197, 94, 0); }
-      100% { transform: scale(0.95); box-shadow: 0 0 0 0 rgba(34, 197, 94, 0); }
-    }
-
-    @keyframes pulse-red {
-      0% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0.55); }
-      70% { transform: scale(1.04); box-shadow: 0 0 0 6px rgba(239, 68, 68, 0); }
-      100% { transform: scale(0.96); box-shadow: 0 0 0 0 rgba(239, 68, 68, 0); }
-    }
-
-    .header-brand {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: 10px;
-    }
+    .header-brand { display: flex; flex-direction: column; align-items: center; gap: 10px; }
     .loja-logo {
-      width: 176px;
-      height: 176px;
-      border-radius: 24px;
-      object-fit: cover;
-      background: #f5b841;
-      border: 3px solid var(--accent);
-      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
+      width: 150px; height: 150px; border-radius: 22px; object-fit: cover;
+      background: #f5b841; border: 3px solid var(--accent); box-shadow: 0 10px 24px rgba(0, 0, 0, 0.4);
     }
-    header h1 { font-size: 24px; font-weight: 800; letter-spacing: 0.5px; }
+    header h1 { font-size: 24px; font-weight: 800; }
     header p { font-size: 13px; color: #e5e7eb; margin-top: 6px; }
-    .info-pills {
-      display: flex;
-      justify-content: center;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-    .pill {
-      background: rgba(255,255,255,0.12);
-      padding: 5px 10px;
-      border-radius: 8px;
-      font-size: 12px;
-    }
+    .info-pills { display: flex; justify-content: center; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .pill { background: rgba(255,255,255,0.12); padding: 5px 10px; border-radius: 8px; font-size: 12px; }
 
-    .promo-banner {
-      background: #fffbeb;
-      border: 1px dashed var(--accent);
-      margin: 14px 0;
-      padding: 12px;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 13px;
-      color: #92400e;
-    }
-    .promo-banner strong { color: var(--primary); }
-
-    .tabs-bar {
-      display: grid;
-      grid-template-columns: repeat(2, 1fr);
-      gap: 8px;
-      margin: 12px 0 16px;
-    }
+    .tabs-bar { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin: 16px 0; }
     .tab-btn {
-      background: var(--card);
-      border: 1px solid #e5e7eb;
-      color: var(--text);
-      padding: 11px 10px;
-      border-radius: 10px;
-      font-size: 13px;
-      font-weight: 700;
-      cursor: pointer;
-      text-align: center;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
-      transition: all 0.15s ease;
+      background: var(--card); border: 1px solid #e5e7eb; color: var(--text);
+      padding: 11px 8px; border-radius: 10px; font-size: 13px; font-weight: 700; cursor: pointer;
     }
-    .tab-btn.active {
-      background: var(--primary);
-      color: #fff;
-      border-color: var(--primary);
-      box-shadow: 0 3px 8px rgba(217, 56, 30, 0.25);
-    }
+    .tab-btn.active { background: var(--primary); color: #fff; border-color: var(--primary); }
 
-    .container { max-width: 600px; margin: 0 auto; padding: 0 16px; }
+    .container { max-width: 620px; margin: 0 auto; padding: 0 16px; }
     .section-title {
-      font-size: 17px;
-      font-weight: 700;
-      margin: 10px 0 12px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
+      font-size: 17px; font-weight: 700; margin: 10px 0 12px;
+      display: flex; align-items: center; justify-content: space-between;
     }
-    .section-count {
-      font-size: 12px;
-      font-weight: 600;
-      color: var(--muted);
-    }
+    .section-count { font-size: 12px; font-weight: 600; color: var(--muted); }
 
     .item-card {
-      background: var(--card);
-      border-radius: 12px;
-      padding: 14px;
-      margin-bottom: 12px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 12px;
-      border: 1px solid #eef0f2;
+      background: var(--card); border-radius: 12px; padding: 14px; margin-bottom: 12px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05); display: flex; justify-content: space-between;
+      align-items: center; gap: 10px; border: 1px solid #eef0f2;
     }
     .item-thumb {
-      width: 72px;
-      height: 72px;
-      border-radius: 10px;
-      object-fit: cover;
-      flex-shrink: 0;
-      background: #fef3c7;
-      border: 1px solid #eef0f2;
+      width: 68px; height: 68px; border-radius: 10px; object-fit: cover;
+      flex-shrink: 0; background: #fef3c7; border: 1px solid #eef0f2;
     }
     .item-info { flex: 1; min-width: 0; }
-    .tag-destaque {
-      display: inline-block;
-      background: #fef3c7;
-      color: #b45309;
-      font-size: 11px;
-      font-weight: 700;
-      padding: 2px 8px;
-      border-radius: 6px;
-      margin-bottom: 4px;
-    }
-    .item-info h3 { font-size: 16px; font-weight: 700; margin-bottom: 4px; }
-    .item-info p { font-size: 13px; color: var(--muted); line-height: 1.35; margin-bottom: 8px; }
-    .price-line { font-size: 14px; font-weight: 800; color: var(--primary); }
+    .item-info h3 { font-size: 15px; font-weight: 700; margin-bottom: 3px; }
+    .item-info p { font-size: 12px; color: var(--muted); line-height: 1.35; margin-bottom: 6px; }
+    .price-line { font-size: 12px; font-weight: 800; color: var(--primary); }
 
-    .size-controls {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      flex-shrink: 0;
-    }
-    .size-row {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 6px;
-      font-size: 12px;
-      font-weight: 700;
-    }
-    .size-label { min-width: 44px; color: #374151; }
+    .size-controls { display: flex; flex-direction: column; gap: 5px; flex-shrink: 0; }
+    .size-row { display: flex; align-items: center; justify-content: flex-end; gap: 6px; font-size: 12px; font-weight: 700; }
+    .size-label { min-width: 54px; text-align: right; color: #374151; }
 
-    .qty-control {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      background: #f3f4f6;
-      padding: 4px 8px;
-      border-radius: 8px;
-      flex-shrink: 0;
-    }
+    .qty-control { display: flex; align-items: center; gap: 5px; background: #f3f4f6; padding: 3px 6px; border-radius: 8px; }
     .qty-btn {
-      width: 24px;
-      height: 24px;
-      border: none;
-      border-radius: 6px;
-      background: var(--primary);
-      color: #fff;
-      font-size: 16px;
-      line-height: 1;
-      font-weight: bold;
-      cursor: pointer;
+      width: 24px; height: 24px; border: none; border-radius: 6px;
+      background: var(--primary); color: #fff; font-size: 15px; font-weight: bold; cursor: pointer;
     }
     .qty-btn.minus { background: #9ca3af; }
     .qty-val { font-weight: 700; min-width: 16px; text-align: center; }
 
     .checkout-box {
-      background: var(--card);
-      border-radius: 12px;
-      padding: 16px;
-      margin-top: 18px;
-      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      background: var(--card); border-radius: 12px; padding: 16px;
+      margin-top: 18px; box-shadow: 0 2px 6px rgba(0,0,0,0.05);
     }
     .checkout-box label { display: block; font-size: 13px; font-weight: 600; margin: 10px 0 4px; }
     .checkout-box input, .checkout-box select {
-      width: 100%;
-      padding: 10px;
-      border: 1px solid #d1d5db;
-      border-radius: 8px;
-      font-size: 14px;
+      width: 100%; padding: 10px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;
     }
+    .btn-frete {
+      margin-top: 8px; background: #1f2937; color: #fff; border: none;
+      padding: 9px 12px; border-radius: 8px; font-size: 13px; font-weight: 700; cursor: pointer;
+    }
+    .frete-status { margin-top: 8px; font-size: 12px; font-weight: 700; color: #16a34a; }
+    .frete-erro { color: #dc2626; }
 
-    .store-footer {
-      text-align: center;
-      font-size: 12px;
-      color: var(--muted);
-      margin-top: 24px;
-      line-height: 1.6;
-    }
+    .store-footer { text-align: center; font-size: 12px; color: var(--muted); margin-top: 24px; line-height: 1.6; }
 
     .bottom-bar {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      right: 0;
-      background: #fff;
-      padding: 12px 16px;
-      box-shadow: 0 -3px 12px rgba(0,0,0,0.1);
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      z-index: 100;
+      position: fixed; bottom: 0; left: 0; right: 0; background: #fff;
+      padding: 12px 16px; box-shadow: 0 -3px 12px rgba(0,0,0,0.1);
+      display: flex; justify-content: space-between; align-items: center; z-index: 100;
     }
     .total-box span { display: block; font-size: 12px; color: var(--muted); }
     .total-box strong { font-size: 18px; color: var(--text); }
     .btn-whats {
-      background: var(--whatsapp);
-      color: #fff;
-      border: none;
-      padding: 12px 18px;
-      border-radius: 10px;
-      font-size: 15px;
-      font-weight: 700;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      gap: 6px;
+      background: var(--whatsapp); color: #fff; border: none; padding: 12px 18px;
+      border-radius: 10px; font-size: 15px; font-weight: 700; cursor: pointer;
     }
     .btn-whats:disabled { background: #9ca3af; cursor: not-allowed; }
   </style>
@@ -316,7 +136,7 @@
 <body>
 
   <header>
-    <div class="badge-top" id="loja-badge">⭐ 5,0 no Google • Delivery Oficial</div>
+    <div class="badge-top" id="loja-badge">⭐ Pastel do Glória • Delivery</div>
     <div class="status-wrap">
       <div class="status-pill fechada" id="status-loja" role="status" aria-live="polite">
         <span class="status-dot" aria-hidden="true"></span>
@@ -324,16 +144,10 @@
       </div>
     </div>
     <div class="header-brand">
-      <img
-        id="loja-logo"
-        class="loja-logo"
-        src=""
-        alt="Logo Pastel do Glória"
-        style="display: none;"
-      >
+      <img id="loja-logo" class="loja-logo" src="" alt="Logo Pastel do Glória" style="display: none;">
       <div>
         <h1 id="loja-nome">Pastel do Glória</h1>
-        <p id="loja-slogan">Pastéis fritos na hora, porções crocantes e bebidas geladas!</p>
+        <p id="loja-slogan">Pastéis tradicionais, especiais, doces e bebidas geladas!</p>
       </div>
     </div>
     <div class="info-pills">
@@ -343,55 +157,52 @@
   </header>
 
   <div class="container">
-    <div class="promo-banner" id="promo-banner">
-      🔥 <strong>Tele-entrega até 5 km (Glória / POA)</strong><br>
-      <span id="faixas-resumo">1km: R$ 5,00 • 2km: R$ 7,00 • 3km: R$ 9,00 • 4km: R$ 11,00 • 5km: R$ 13,00</span>
-    </div>
-
     <div class="tabs-bar" id="tabs-bar"></div>
     <div id="menu-container"></div>
 
     <div class="checkout-box">
       <div class="section-title" style="margin-top: 0;">🛵 Dados para Entrega / Retirada</div>
+
       <label for="cliente-nome">Seu Nome</label>
       <input type="text" id="cliente-nome" placeholder="Ex: Adriano">
 
       <label for="cliente-telefone">Seu Telefone / WhatsApp</label>
-      <input type="tel" id="cliente-telefone" placeholder="Ex: 99 999999999">
+      <input type="tel" id="cliente-telefone" placeholder="Ex: 51 999999999">
 
       <label for="tipo-entrega">Como deseja receber?</label>
-      <select id="tipo-entrega" onchange="toggleEndereco()">
+      <select id="tipo-entrega" onchange="aoMudarTipoEntrega()">
         <option value="Entrega (Delivery)">Entrega (Delivery)</option>
         <option value="Retirada no Local" id="opcao-retirada">Retirada no Local (R. Manduca Nunes, 160)</option>
       </select>
 
       <div id="box-endereco">
-        <label for="cliente-endereco">Endereço completo e ponto de referência</label>
-        <input type="text" id="cliente-endereco" placeholder="Rua, número, bairro...">
+        <label for="cliente-endereco">Endereço completo (rua, número e bairro)</label>
+        <input type="text" id="cliente-endereco" placeholder="Ex: Rua Manduca Nunes, 160, Glória" onblur="calcularEntregaAutomatica()">
+        <button type="button" class="btn-frete" onclick="calcularEntregaAutomatica()">Calcular entrega automática</button>
+        <div id="frete-resultado" class="frete-status"></div>
       </div>
 
       <label for="forma-pagamento">Forma de Pagamento</label>
       <select id="forma-pagamento">
         <option value="Pix">Pix</option>
-        <option value="Cartão de Crédito (Maquininha)">Cartão de Crédito (Maquininha / NFC)</option>
-        <option value="Cartão de Débito (Maquininha)">Cartão de Débito (Maquininha / NFC)</option>
+        <option value="Cartão de Crédito">Cartão de Crédito</option>
+        <option value="Cartão de Débito">Cartão de Débito</option>
         <option value="Dinheiro">Dinheiro</option>
       </select>
 
-      <label for="cliente-obs">Observações do Pedido (opcional)</label>
-      <input type="text" id="cliente-obs" placeholder="Ex: Sem cebola, mandar maionese extra...">
+      <label for="cliente-obs">Observações / Adicionais (opcional)</label>
+      <input type="text" id="cliente-obs" placeholder="Ex: Sem cebola, adicional de catupiry...">
     </div>
 
     <div class="store-footer" id="loja-rodape">
       <strong>Pastel do Glória</strong> • R. Manduca Nunes, 160 - Glória, Porto Alegre - RS<br>
-      Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC<br>
-      <em>Cardápio Digital</em>
+      Terça-feira: Fechado • Cardápio Digital
     </div>
   </div>
 
   <div class="bottom-bar">
     <div class="total-box">
-      <span>Total do Pedido</span>
+      <span id="resumo-frete-bar">Subtotal + Entrega</span>
       <strong id="total-valor">R$ 0,00</strong>
     </div>
     <button class="btn-whats" id="btn-enviar" onclick="enviarWhatsApp()" disabled>
@@ -404,16 +215,14 @@
       apiUrl: "https://www.pastel-do-glo-ria.onrender.com",
       nome: "Pastel do Glória",
       logoArquivo: "loja-logo.jpg",
-      badge: "⭐ 5,0 no Google • Delivery Oficial",
-      slogan: "Pastéis fritos na hora, porções crocantes e bebidas geladas!",
+      badge: "⭐ Pastel do Glória • Delivery",
+      slogan: "Pastéis tradicionais, especiais, doces e bebidas geladas!",
       whatsapp: "5553991312445",
       enderecoCurto: "📍 R. Manduca Nunes, 160 - Glória, POA",
       enderecoCompleto: "R. Manduca Nunes, 160 - Glória, Porto Alegre - RS",
       horario: "🕒 Seg e Qua a Dom: 18h às 23:30 (Qui 19h)",
       tempoEntrega: "de 45 minutos a 70 minutos",
       raioMaximoKm: 5,
-      obsRodape: "Terça-feira: Fechado • Aceitamos Crédito, Débito, Pix e NFC",
-      pastaImagens: "",
       agenda: {
         0: { abre: 18 * 60, fecha: 23 * 60 + 30 },
         1: { abre: 18 * 60, fecha: 23 * 60 + 30 },
@@ -425,47 +234,133 @@
       }
     };
 
-    let faixasEntrega = [
-      { ateKm: 1, taxa: 5.0 },
-      { ateKm: 2, taxa: 7.0 },
-      { ateKm: 3, taxa: 9.0 },
-      { ateKm: 4, taxa: 11.0 },
-      { ateKm: 5, taxa: 13.0 }
+    const categorias = [
+      { chave: "salgados", titulo: "🥟 Pastéis Salgados", emoji: "🥟" },
+      { chave: "doces",    titulo: "🍫 Pastéis Doces",    emoji: "🍫" },
+      { chave: "bebidas",  titulo: "🥤 Bebidas",         emoji: "🥤" }
     ];
+
+    let categoriaAtiva = "salgados";
+
+    let produtos = [
+      { id: "1", nome: "1 - Carne com ovo", categoria: "salgados", descricao: "Carne com ovo.", imagem: "carne-moida-queijo-ovo.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "2", nome: "2 - Carne, ovo e queijo", categoria: "salgados", descricao: "Carne, ovo e queijo.", imagem: "carne-moida-queijo-ovo.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "3", nome: "3 - Carne completo", categoria: "salgados", descricao: "Ovo, azeitonas e queijo.", imagem: "carne-moida-queijo-ovo.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "4", nome: "4 - Frango com ovo", categoria: "salgados", descricao: "Frango com ovo.", imagem: "frango-catupiry.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "5", nome: "5 - Frango, ovo e queijo", categoria: "salgados", descricao: "Frango, ovo e queijo.", imagem: "frango-catupiry.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "6", nome: "6 - Frango Completo", categoria: "salgados", descricao: "Ovo, azeitonas e queijo.", imagem: "frango-catupiry.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "7", nome: "7 - Frango com queijo mussarela", categoria: "salgados", descricao: "Frango com queijo mussarela.", imagem: "frango-catupiry.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "8", nome: "8 - Frango 2 queijos", categoria: "salgados", descricao: "Cheddar e mussarela.", imagem: "frango-catupiry.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "9", nome: "9 - Calabresa, ovo e queijo", categoria: "salgados", descricao: "Calabresa, ovo e queijo.", imagem: "calabresa-cheddar.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "10", nome: "10 - Calabresa completo", categoria: "salgados", descricao: "Ovo, azeitona e queijo.", imagem: "calabresa-cheddar.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "11", nome: "11 - Calabresa 2 queijos", categoria: "salgados", descricao: "Cheddar e mussarela.", imagem: "calabresa-cheddar.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "12", nome: "12 - Calabresa com cheddar", categoria: "salgados", descricao: "Calabresa com cheddar.", imagem: "calabresa-cheddar.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "13", nome: "13 - Queijo mussarela", categoria: "salgados", descricao: "Queijo mussarela.", imagem: "quatro-queijos.jpg", ativo: true, tamanhos: { medio: 20, big: 27 } },
+      { id: "14", nome: "14 - Palmito com mussarela", categoria: "salgados", descricao: "Palmito com mussarela.", imagem: "quatro-queijos.jpg", ativo: true, tamanhos: { medio: 17, big: 24 } },
+      { id: "15", nome: "15 - Carne de panela com mussarela", categoria: "salgados", descricao: "Carne de panela com mussarela.", imagem: "carne-panela.jpg", ativo: true, tamanhos: { medio: 22, big: 30 } },
+      { id: "16", nome: "16 - Carne de panela 2 queijos", categoria: "salgados", descricao: "Cheddar e mussarela.", imagem: "carne-panela.jpg", ativo: true, tamanhos: { medio: 22, big: 30 } },
+      { id: "17", nome: "17 - Carne de panela", categoria: "salgados", descricao: "Catupiry e mussarela.", imagem: "carne-panela.jpg", ativo: true, tamanhos: { medio: 25, big: 33 } },
+      { id: "18", nome: "18 - Alcatra com gorgonzola", categoria: "salgados", descricao: "Alcatra com gorgonzola.", imagem: "carne-panela.jpg", ativo: true, tamanhos: { medio: 32, big: 39 } },
+      { id: "19", nome: "19 - Frango Catupiry", categoria: "salgados", descricao: "Frango com Catupiry.", imagem: "frango-catupiry.jpg", ativo: true, tamanhos: { medio: 23, big: 29 } },
+      { id: "20", nome: "20 - Pizza", categoria: "salgados", descricao: "Queijo, tomate e orégano.", imagem: "quatro-queijos.jpg", ativo: true, tamanhos: { medio: 21, big: 27 } },
+      { id: "21", nome: "21 - 3 queijos", categoria: "salgados", descricao: "Mussarela, catupiry, cheddar e oregano.", imagem: "quatro-queijos.jpg", ativo: true, tamanhos: { medio: 22, big: 28 } },
+      { id: "22", nome: "22 - 4 queijos", categoria: "salgados", descricao: "Mussarela, catupiry, cheddar e gorgonzola.", imagem: "quatro-queijos.jpg", ativo: true, tamanhos: { medio: 24, big: 31 } },
+      { id: "23", nome: "23 - Coração com queijo", categoria: "salgados", descricao: "Coração com queijo.", imagem: "carne-panela.jpg", ativo: true, tamanhos: { medio: 22, big: 30 } },
+      { id: "24", nome: "24 - Coração 2 queijos", categoria: "salgados", descricao: "Coração com 2 queijos.", imagem: "carne-panela.jpg", ativo: true, tamanhos: { medio: 22, big: 30 } },
+      { id: "25", nome: "25 - Coração, ovo, azeitonas e queijo", categoria: "salgados", descricao: "Coração, ovo, azeitonas e queijo.", imagem: "carne-panela.jpg", ativo: true, tamanhos: { medio: 22, big: 30 } },
+      { id: "26", nome: "26 - Camarão com mussarela", categoria: "salgados", descricao: "Camarão com mussarela.", imagem: "camarao-especial.jpeg", ativo: true, tamanhos: { medio: 31, big: 38 } },
+      { id: "27", nome: "27 - Camarão com catupiry", categoria: "salgados", descricao: "Camarão com catupiry.", imagem: "camarao-especial.jpeg", ativo: true, tamanhos: { medio: 35, big: 41 } },
+      { id: "28", nome: "28 - Camarão, ovo, azeitona, queijo", categoria: "salgados", descricao: "Camarão, ovo, azeitona e queijo.", imagem: "camarao-especial.jpeg", ativo: true, tamanhos: { medio: 31, big: 38 } },
+      { id: "29", nome: "29 - Chocolate branco néstle", categoria: "doces", descricao: "Chocolate branco Nestlé.", imagem: "ouro-branco.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "30", nome: "30 - Chocolate preto néstle", categoria: "doces", descricao: "Chocolate preto Nestlé.", imagem: "mms.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "31", nome: "31 - Meio a Meio", categoria: "doces", descricao: "Choc preto e branco.", imagem: "ouro-branco.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "32", nome: "32 - Ouro branco com choc branco", categoria: "doces", descricao: "Ouro branco com chocolate branco.", imagem: "ouro-branco.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "33", nome: "33 - Ouro branco com choc preto", categoria: "doces", descricao: "Ouro branco com chocolate preto.", imagem: "ouro-branco.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "34", nome: "34 - Stikadinho meio a meio", categoria: "doces", descricao: "Stikadinho meio a meio.", imagem: "chocolate-coco.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "35", nome: "35 - Stikadinho choc preto", categoria: "doces", descricao: "Stikadinho com chocolate preto.", imagem: "chocolate-coco.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "36", nome: "36 - M&Ms com chocolate preto", categoria: "doces", descricao: "M&Ms com chocolate preto.", imagem: "mms.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "37", nome: "37 - M&ms com chocolate branco", categoria: "doces", descricao: "M&Ms com chocolate branco.", imagem: "mms.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "38", nome: "38 - Prestigio", categoria: "doces", descricao: "Chocolate preto e coco ralado.", imagem: "chocolate-coco.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "39", nome: "39 - Beijinho", categoria: "doces", descricao: "Chocolate branco com coco ralado.", imagem: "chocolate-coco.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "40", nome: "40 - Doce de leite mumu com banana", categoria: "doces", descricao: "Doce de leite Mumu com banana.", imagem: "doce-mumu.jpg", ativo: true, tamanhos: { pequeno: 20, medio: 28, big: 38 } },
+      { id: "42", nome: "42 - Romeu e Julieta", categoria: "doces", descricao: "Romeu e Julieta.", imagem: "doce-mumu.jpg", ativo: true, tamanhos: { medio: 21, big: 25 } },
+      { id: "43", nome: "43 - Nutella com Banana", categoria: "doces", descricao: "Nutella com banana.", imagem: "nutella-banana.jpg", ativo: true, tamanhos: { medio: 30 } },
+      { id: "44", nome: "44 - Nutella", categoria: "doces", descricao: "Nutella.", imagem: "nutella-banana.jpg", ativo: true, tamanhos: { pequeno: 23 } },
+      { id: "45", nome: "45 - Nutella com leite ninho", categoria: "doces", descricao: "Nutella com leite Ninho.", imagem: "nutella-banana.jpg", ativo: true, tamanhos: { pequeno: 25 } },
+      { id: "46", nome: "46 - Churros", categoria: "doces", descricao: "Doce de leite, açúcar e canela por fora.", imagem: "doce-mumu.jpg", ativo: true, tamanhos: { pequeno: 19 } },
+      { id: "beb-coca-2l", nome: "Coca-cola 2L", categoria: "bebidas", descricao: "Refrigerante 2 litros.", imagem: "refri-2l.jpg", ativo: true, precoUnico: 14 },
+      { id: "beb-coca-zero-2l", nome: "Coca-cola zero 2L", categoria: "bebidas", descricao: "Refrigerante zero 2 litros.", imagem: "refri-2l.jpg", ativo: true, precoUnico: 14 },
+      { id: "beb-fruki-2l", nome: "Fruki guarana 2L", categoria: "bebidas", descricao: "Guaraná Fruki 2 litros.", imagem: "refri-2l.jpg", ativo: true, precoUnico: 11 },
+      { id: "beb-coca-lata", nome: "Coca-cola lata", categoria: "bebidas", descricao: "Lata 350ml.", imagem: "coca-lata.jpg", ativo: true, precoUnico: 6 },
+      { id: "beb-coca-zero-lata", nome: "Coca-cola zero lata", categoria: "bebidas", descricao: "Lata 350ml.", imagem: "coca-lata.jpg", ativo: true, precoUnico: 6 },
+      { id: "beb-fruki-lata", nome: "Fruki guarana lata", categoria: "bebidas", descricao: "Lata 350ml.", imagem: "guarana-lata.jpg", ativo: true, precoUnico: 6 },
+      { id: "beb-budweiser", nome: "Cerveja Budweiser latão", categoria: "bebidas", descricao: "Latão gelado.", imagem: "coca-lata.jpg", ativo: true, precoUnico: 10 },
+      { id: "beb-heineken", nome: "Cerveja Heineken latão", categoria: "bebidas", descricao: "Latão gelado.", imagem: "coca-lata.jpg", ativo: true, precoUnico: 10 },
+      { id: "beb-agua", nome: "Água", categoria: "bebidas", descricao: "Água mineral sem gás.", imagem: "agua-500ml.jpg", ativo: true, precoUnico: 3.5 },
+      { id: "beb-agua-gas", nome: "Água com gás", categoria: "bebidas", descricao: "Água mineral com gás.", imagem: "agua-500ml.jpg", ativo: true, precoUnico: 3.5 }
+    ];
+
+    const carrinho = {};
+
+    let freteCalculado = {
+      calculado: false,
+      disponivel: false,
+      taxa: 0,
+      distanciaKm: null,
+      enderecoFormatado: ""
+    };
+
+    function getQtd(id) {
+      const c = carrinho[id] || {};
+      return {
+        pequeno: c.pequeno || 0,
+        medio: c.medio || 0,
+        big: c.big || 0,
+        unico: c.unico || 0
+      };
+    }
+
+    function formatarMoeda(v) {
+      return Number(v || 0).toLocaleString("pt-BR", { style: "currency", currency: "BRL" });
+    }
+
+    function normalizarCategoria(catRaw) {
+      const c = String(catRaw || "").toLowerCase().trim();
+      if (c.includes("doce")) return "doces";
+      if (c.includes("bebid")) return "bebidas";
+      return "salgados";
+    }
+
+    function normalizarProduto(p) {
+      return {
+        id: String(p.id),
+        categoria: normalizarCategoria(p.categoria),
+        nome: p.nome || "Item",
+        descricao: p.descricao || "",
+        imagem: p.imagem || "",
+        ativo: p.ativo !== undefined ? Boolean(p.ativo) : true,
+        precoUnico: p.precoUnico !== undefined ? Number(p.precoUnico) : null,
+        tamanhos: p.tamanhos ? {
+          pequeno: p.tamanhos.pequeno !== undefined ? Number(p.tamanhos.pequeno) : null,
+          medio: p.tamanhos.medio !== undefined ? Number(p.tamanhos.medio) : null,
+          big: p.tamanhos.big !== undefined ? Number(p.tamanhos.big) : null
+        } : null
+      };
+    }
 
     function verificarLojaAberta(dataReferencia = new Date()) {
       const dia = dataReferencia.getDay();
-      const minutosAtuais = dataReferencia.getHours() * 60 + dataReferencia.getMinutes();
+      const min = dataReferencia.getHours() * 60 + dataReferencia.getMinutes();
       const faixa = LOJA.agenda ? LOJA.agenda[dia] : null;
-
-      if (!faixa) {
-        return {
-          aberta: false,
-          texto: dia === 2 ? "Loja fechada • Terça não abre" : "Loja fechada agora"
-        };
-      }
-
-      if (minutosAtuais >= faixa.abre && minutosAtuais <= faixa.fecha) {
-        return {
-          aberta: true,
-          texto: "Loja aberta agora"
-        };
-      }
-
-      const horaAbertura = `${String(Math.floor(faixa.abre / 60)).padStart(2, "0")}:${String(faixa.abre % 60).padStart(2, "0")}`;
-      return {
-        aberta: false,
-        texto: minutosAtuais < faixa.abre
-          ? `Loja fechada • Abre às ${horaAbertura}`
-          : "Loja fechada agora"
-      };
+      if (!faixa) return { aberta: false, texto: dia === 2 ? "Loja fechada • Terça não abre" : "Loja fechada agora" };
+      if (min >= faixa.abre && min <= faixa.fecha) return { aberta: true, texto: "Loja aberta agora" };
+      const h = `${String(Math.floor(faixa.abre / 60)).padStart(2, "0")}:${String(faixa.abre % 60).padStart(2, "0")}`;
+      return { aberta: false, texto: min < faixa.abre ? `Loja fechada • Abre às ${h}` : "Loja fechada agora" };
     }
 
     function atualizarStatusLoja() {
       const pill = document.getElementById("status-loja");
       const textoEl = document.getElementById("status-loja-texto");
-      if (!pill || !textoEl) return;
-
       const status = verificarLojaAberta(new Date());
       textoEl.textContent = status.texto;
       pill.classList.toggle("aberta", status.aberta);
@@ -482,88 +377,8 @@
       const padrao = criarIconePadrao(emojiFallback);
       if (!arquivoImagem || !arquivoImagem.trim()) return padrao;
       const limpo = arquivoImagem.trim();
-      if (limpo.startsWith("http://") || limpo.startsWith("https://") || limpo.startsWith("data:")) {
-        return limpo;
-      }
-      const pastaBase = LOJA.pastaImagens ? LOJA.pastaImagens.trim() : "";
-      const pasta = !pastaBase || pastaBase.endsWith("/") ? pastaBase : `${pastaBase}/`;
-      const arquivo = limpo.startsWith("/") ? limpo.slice(1) : limpo;
-      return `${pasta}${arquivo}`;
-    }
-
-    const categorias = [
-      { chave: "salgados", titulo: "🥟 Pastéis Salgados", emoji: "🥟" },
-      { chave: "doces",    titulo: "🍫 Pastéis Doces",    emoji: "🍫" },
-      { chave: "porcoes",  titulo: "🍟 Porções",         emoji: "🍟" },
-      { chave: "bebidas",  titulo: "🥤 Bebidas",         emoji: "🥤" }
-    ];
-
-    let categoriaAtiva = "salgados";
-
-    function normalizarCategoria(catRaw) {
-      const c = String(catRaw || "").toLowerCase().trim();
-      if (c.includes("doce")) return "doces";
-      if (c.includes("porc")) return "porcoes";
-      if (c.includes("bebid")) return "bebidas";
-      return "salgados";
-    }
-
-    function normalizarProduto(p) {
-      const medio = Number(p.tamanhos?.medio ?? p.precoMedio ?? p.preco ?? 14);
-      const big = Number(p.tamanhos?.big ?? p.precoBig ?? medio);
-      return {
-        id: String(p.id),
-        categoria: normalizarCategoria(p.categoria),
-        nome: p.nome || "Item",
-        desc: p.descricao ?? p.desc ?? "",
-        destaque: p.destaque || "",
-        arquivoImagem: p.imagem ?? p.arquivoImagem ?? "",
-        ativo: p.ativo !== undefined ? Boolean(p.ativo) : true,
-        tamanhos: {
-          medio: Number.isNaN(medio) ? 14 : medio,
-          big: Number.isNaN(big) ? 19 : big
-        }
-      };
-    }
-
-    let produtos = [
-      {
-        id: "pastel-carne-panela",
-        categoria: "salgados",
-        nome: "Carne de Panela",
-        desc: "Carne desfiada bem temperada no ponto certo.",
-        destaque: "🔥 Destaque",
-        arquivoImagem: "carne-panela.jpg",
-        ativo: true,
-        tamanhos: { medio: 14.0, big: 19.0 }
-      },
-      {
-        id: "pastel-camarao-especial",
-        categoria: "salgados",
-        nome: "Camarão Especial",
-        desc: "Camarão refogado cremoso com tempero da casa.",
-        destaque: "⭐ Mais Elogiado",
-        arquivoImagem: "camarao-especial.jpeg",
-        ativo: true,
-        tamanhos: { medio: 18.0, big: 24.0 }
-      }
-    ];
-
-    // carrinho[id] = { medio: 0, big: 0 }
-    const carrinho = {};
-
-    function getQtdItem(id) {
-      const entry = carrinho[id];
-      if (!entry) return { medio: 0, big: 0 };
-      return { medio: entry.medio || 0, big: entry.big || 0 };
-    }
-
-    function atualizarResumoFaixas() {
-      const el = document.getElementById("faixas-resumo");
-      if (!el || !Array.isArray(faixasEntrega) || faixasEntrega.length === 0) return;
-      el.textContent = faixasEntrega
-        .map(f => `${f.ateKm}km: ${formatarMoeda(Number(f.taxa))}`)
-        .join(" • ");
+      if (limpo.startsWith("http://") || limpo.startsWith("https://") || limpo.startsWith("data:")) return limpo;
+      return limpo.startsWith("/") ? limpo.slice(1) : limpo;
     }
 
     function aplicarDadosLoja() {
@@ -574,29 +389,13 @@
       document.getElementById("loja-endereco").textContent = LOJA.enderecoCurto;
       document.getElementById("loja-horario").textContent = LOJA.horario;
       document.getElementById("opcao-retirada").textContent = `Retirada no Local (${LOJA.enderecoCompleto})`;
-      document.getElementById("loja-rodape").innerHTML = `
-        <strong>${LOJA.nome}</strong> • ${LOJA.enderecoCompleto}<br>
-        ${LOJA.obsRodape}<br>
-        <em>Cardápio Digital</em>
-      `;
 
       const logoEl = document.getElementById("loja-logo");
-      if (logoEl) {
-        logoEl.alt = `Logo ${LOJA.nome}`;
-        if (LOJA.logoArquivo && LOJA.logoArquivo.trim()) {
-          logoEl.onerror = function () {
-            this.style.display = "none";
-          };
-          logoEl.onload = function () {
-            this.style.display = "block";
-          };
-          logoEl.src = resolverImagem(LOJA.logoArquivo, "");
-        } else {
-          logoEl.style.display = "none";
-        }
+      if (LOJA.logoArquivo) {
+        logoEl.onerror = function () { this.style.display = "none"; };
+        logoEl.onload = function () { this.style.display = "block"; };
+        logoEl.src = resolverImagem(LOJA.logoArquivo, "");
       }
-
-      atualizarResumoFaixas();
       atualizarStatusLoja();
     }
 
@@ -604,9 +403,7 @@
       if (!LOJA.apiUrl) return;
       try {
         const base = LOJA.apiUrl.trim().replace(/\/+$/, "");
-        const res = await fetch(`${base}/api/cardapio`, {
-          signal: AbortSignal.timeout(8000)
-        });
+        const res = await fetch(`${base}/api/cardapio`, { signal: AbortSignal.timeout(8000) });
         if (!res.ok) return;
         const data = await res.json();
 
@@ -614,32 +411,19 @@
           if (data.loja.nome) LOJA.nome = data.loja.nome;
           if (data.loja.whatsapp) LOJA.whatsapp = data.loja.whatsapp;
           if (data.loja.raioMaximoKm) LOJA.raioMaximoKm = Number(data.loja.raioMaximoKm);
-          if (data.loja.bairro || data.loja.cidade) {
-            const localTexto = [data.loja.bairro, data.loja.cidade].filter(Boolean).join(", ");
-            if (localTexto) LOJA.enderecoCurto = `📍 ${localTexto}`;
-          }
+          if (data.loja.tempoEntrega) LOJA.tempoEntrega = data.loja.tempoEntrega;
         }
 
-        if (Array.isArray(data.faixasEntrega) && data.faixasEntrega.length > 0) {
-          faixasEntrega = data.faixasEntrega;
-        }
-
-        if (Array.isArray(data.produtos)) {
-          produtos = data.produtos
-            .filter(p => p.ativo !== false)
-            .map(normalizarProduto);
+        if (Array.isArray(data.produtos) && data.produtos.length > 0) {
+          produtos = data.produtos.filter(p => p.ativo !== false).map(normalizarProduto);
         }
 
         aplicarDadosLoja();
         renderizarAbas();
         renderizarMenu();
       } catch {
-        // Mantém fallback local se o servidor estiver dormindo ou inacessível
+        // Mantém fallback local
       }
-    }
-
-    function formatarMoeda(valor) {
-      return Number(valor || 0).toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
     }
 
     function trocarAba(chave) {
@@ -649,186 +433,303 @@
     }
 
     function renderizarAbas() {
-      const tabsBar = document.getElementById('tabs-bar');
-      tabsBar.innerHTML = categorias.map(cat => {
-        const ativa = cat.chave === categoriaAtiva ? 'active' : '';
+      document.getElementById("tabs-bar").innerHTML = categorias.map(cat => `
+        <button type="button" class="tab-btn ${cat.chave === categoriaAtiva ? "active" : ""}" onclick="trocarAba('${cat.chave}')">
+          ${cat.titulo}
+        </button>
+      `).join("");
+    }
+
+    function renderizarControlesPreco(p, qtd) {
+      if (p.categoria === "bebidas" || (p.precoUnico !== null && p.precoUnico !== undefined && !p.tamanhos)) {
+        const preco = Number(p.precoUnico ?? p.tamanhos?.medio ?? 0);
         return `
-          <button type="button" class="tab-btn ${ativa}" onclick="trocarAba('${cat.chave}')">
-            ${cat.titulo}
-          </button>
+          <div class="item-info">
+            <h3>${p.nome}</h3>
+            <p>${p.descricao}</p>
+            <div class="price-line">${formatarMoeda(preco)}</div>
+          </div>
+          <div class="size-controls">
+            <div class="size-row">
+              <div class="qty-control">
+                <button type="button" class="qty-btn minus" onclick="alterarQtd('${p.id}', 'unico', -1)">-</button>
+                <span class="qty-val">${qtd.unico}</span>
+                <button type="button" class="qty-btn" onclick="alterarQtd('${p.id}', 'unico', 1)">+</button>
+              </div>
+            </div>
+          </div>
         `;
-      }).join('');
+      }
+
+      const t = p.tamanhos || {};
+      const linhasPreco = [];
+      const linhasBotoes = [];
+
+      if (t.pequeno !== null && t.pequeno !== undefined) {
+        linhasPreco.push(`Peq: ${formatarMoeda(t.pequeno)}`);
+        linhasBotoes.push(`
+          <div class="size-row">
+            <span class="size-label">Pequeno</span>
+            <div class="qty-control">
+              <button type="button" class="qty-btn minus" onclick="alterarQtd('${p.id}', 'pequeno', -1)">-</button>
+              <span class="qty-val">${qtd.pequeno}</span>
+              <button type="button" class="qty-btn" onclick="alterarQtd('${p.id}', 'pequeno', 1)">+</button>
+            </div>
+          </div>
+        `);
+      }
+
+      if (t.medio !== null && t.medio !== undefined) {
+        linhasPreco.push(`Médio: ${formatarMoeda(t.medio)}`);
+        linhasBotoes.push(`
+          <div class="size-row">
+            <span class="size-label">Médio</span>
+            <div class="qty-control">
+              <button type="button" class="qty-btn minus" onclick="alterarQtd('${p.id}', 'medio', -1)">-</button>
+              <span class="qty-val">${qtd.medio}</span>
+              <button type="button" class="qty-btn" onclick="alterarQtd('${p.id}', 'medio', 1)">+</button>
+            </div>
+          </div>
+        `);
+      }
+
+      if (t.big !== null && t.big !== undefined) {
+        linhasPreco.push(`Big: ${formatarMoeda(t.big)}`);
+        linhasBotoes.push(`
+          <div class="size-row">
+            <span class="size-label">Big</span>
+            <div class="qty-control">
+              <button type="button" class="qty-btn minus" onclick="alterarQtd('${p.id}', 'big', -1)">-</button>
+              <span class="qty-val">${qtd.big}</span>
+              <button type="button" class="qty-btn" onclick="alterarQtd('${p.id}', 'big', 1)">+</button>
+            </div>
+          </div>
+        `);
+      }
+
+      return `
+        <div class="item-info">
+          <h3>${p.nome}</h3>
+          <p>${p.descricao}</p>
+          <div class="price-line">${linhasPreco.join(" • ")}</div>
+        </div>
+        <div class="size-controls">
+          ${linhasBotoes.join("")}
+        </div>
+      `;
     }
 
     function renderizarMenu() {
-      const container = document.getElementById('menu-container');
+      const container = document.getElementById("menu-container");
       const cat = categorias.find(c => c.chave === categoriaAtiva) || categorias[0];
       const itensCat = produtos.filter(p => p.categoria === cat.chave);
       const padrao = criarIconePadrao(cat.emoji);
 
       const cardsHtml = itensCat.map(p => {
-        const qtd = getQtdItem(p.id);
-        const srcFoto = resolverImagem(p.arquivoImagem, cat.emoji);
-        const precoMedio = p.tamanhos?.medio ?? 0;
-        const precoBig = p.tamanhos?.big ?? precoMedio;
-        const mesmoPreco = Number(precoMedio) === Number(precoBig);
-
+        const qtd = getQtd(p.id);
+        const srcFoto = resolverImagem(p.imagem, cat.emoji);
         return `
           <div class="item-card">
-            <img
-              class="item-thumb"
-              src="${srcFoto}"
-              alt="${p.nome}"
-              onerror="this.onerror=null;this.src='${padrao}';"
-            >
-            <div class="item-info">
-              ${p.destaque ? `<span class="tag-destaque">${p.destaque}</span>` : ''}
-              <h3>${p.nome}</h3>
-              <p>${p.desc}</p>
-              <div class="price-line">
-                ${mesmoPreco
-                  ? `${formatarMoeda(precoMedio)}`
-                  : `Médio: ${formatarMoeda(precoMedio)} • Big: ${formatarMoeda(precoBig)}`
-                }
-              </div>
-            </div>
-            <div class="size-controls">
-              <div class="size-row">
-                <span class="size-label">Médio</span>
-                <div class="qty-control">
-                  <button type="button" class="qty-btn minus" onclick="alterarQtd('${p.id}', 'medio', -1)">-</button>
-                  <span class="qty-val">${qtd.medio}</span>
-                  <button type="button" class="qty-btn" onclick="alterarQtd('${p.id}', 'medio', 1)">+</button>
-                </div>
-              </div>
-              <div class="size-row">
-                <span class="size-label">Big</span>
-                <div class="qty-control">
-                  <button type="button" class="qty-btn minus" onclick="alterarQtd('${p.id}', 'big', -1)">-</button>
-                  <span class="qty-val">${qtd.big}</span>
-                  <button type="button" class="qty-btn" onclick="alterarQtd('${p.id}', 'big', 1)">+</button>
-                </div>
-              </div>
-            </div>
+            <img class="item-thumb" src="${srcFoto}" alt="${p.nome}" onerror="this.onerror=null;this.src='${padrao}';">
+            ${renderizarControlesPreco(p, qtd)}
           </div>
         `;
-      }).join('');
+      }).join("");
 
       container.innerHTML = `
         <div class="section-title">
           <span>${cat.titulo}</span>
           <span class="section-count">${itensCat.length} opções</span>
         </div>
-        ${cardsHtml || '<p style="font-size:13px;color:var(--muted);">Nenhum item disponível nesta categoria no momento.</p>'}
+        ${cardsHtml || "<p>Nenhum item disponível.</p>"}
       `;
 
       atualizarTotal();
     }
 
-    function alterarQtd(id, tamanho, delta) {
-      const atual = getQtdItem(id);
-      const novoValor = Math.max(0, (atual[tamanho] || 0) + delta);
-      carrinho[id] = { ...atual, [tamanho]: novoValor };
+    function alterarQtd(id, tam, delta) {
+      const atual = getQtd(id);
+      carrinho[id] = { ...atual, [tam]: Math.max(0, (atual[tam] || 0) + delta) };
       renderizarMenu();
     }
 
-    function atualizarTotal() {
-      let total = 0;
+    function calcularSubtotal() {
+      let subtotal = 0;
       let totalItens = 0;
       produtos.forEach(p => {
-        const qtd = getQtdItem(p.id);
-        total += (p.tamanhos?.medio ?? 0) * qtd.medio;
-        total += (p.tamanhos?.big ?? 0) * qtd.big;
-        totalItens += qtd.medio + qtd.big;
+        const qtd = getQtd(p.id);
+        totalItens += qtd.pequeno + qtd.medio + qtd.big + qtd.unico;
+        if (p.categoria === "bebidas" || (p.precoUnico !== null && p.precoUnico !== undefined && !p.tamanhos)) {
+          subtotal += Number(p.precoUnico ?? p.tamanhos?.medio ?? 0) * qtd.unico;
+        } else {
+          subtotal += Number(p.tamanhos?.pequeno || 0) * qtd.pequeno;
+          subtotal += Number(p.tamanhos?.medio || 0) * qtd.medio;
+          subtotal += Number(p.tamanhos?.big || 0) * qtd.big;
+        }
       });
-      document.getElementById('total-valor').innerText = formatarMoeda(total);
-      document.getElementById('btn-enviar').disabled = totalItens === 0;
+      return { subtotal, totalItens };
     }
 
-    function toggleEndereco() {
-      const tipo = document.getElementById('tipo-entrega').value;
-      document.getElementById('box-endereco').style.display = tipo.includes('Entrega') ? 'block' : 'none';
+    function atualizarTotal() {
+      const { subtotal, totalItens } = calcularSubtotal();
+      const ehEntrega = document.getElementById("tipo-entrega").value.includes("Entrega");
+      const taxa = ehEntrega && freteCalculado.calculado && freteCalculado.disponivel ? freteCalculado.taxa : 0;
+      const totalGeral = subtotal + taxa;
+
+      document.getElementById("total-valor").innerText = formatarMoeda(totalGeral);
+      document.getElementById("btn-enviar").disabled = totalItens === 0;
+
+      const resumoEl = document.getElementById("resumo-frete-bar");
+      if (!ehEntrega) {
+        resumoEl.textContent = "Retirada no local (Frete R$ 0,00)";
+      } else if (freteCalculado.calculado && freteCalculado.disponivel) {
+        resumoEl.textContent = `Subtotal ${formatarMoeda(subtotal)} + Frete ${formatarMoeda(taxa)} (${freteCalculado.distanciaKm} km)`;
+      } else {
+        resumoEl.textContent = `Subtotal ${formatarMoeda(subtotal)} (Informe endereço p/ frete)`;
+      }
     }
 
-    function enviarWhatsApp() {
-      const nome = document.getElementById('cliente-nome').value.trim() || "Cliente";
-      const telefone = document.getElementById('cliente-telefone').value.trim() || "Não informado";
-      const tipo = document.getElementById('tipo-entrega').value;
-      const endereco = document.getElementById('cliente-endereco').value.trim();
-      const pagamento = document.getElementById('forma-pagamento').value;
-      const obs = document.getElementById('cliente-obs').value.trim();
+    function aoMudarTipoEntrega() {
+      const ehEntrega = document.getElementById("tipo-entrega").value.includes("Entrega");
+      document.getElementById("box-endereco").style.display = ehEntrega ? "block" : "none";
+      if (!ehEntrega) {
+        freteCalculado = { calculado: false, disponivel: false, taxa: 0, distanciaKm: null, enderecoFormatado: "" };
+        document.getElementById("frete-resultado").textContent = "";
+      }
+      atualizarTotal();
+    }
 
-      if (tipo.includes('Entrega') && !endereco) {
-        alert("Por favor, informe o endereço para entrega.");
+    async function calcularEntregaAutomatica() {
+      const ehEntrega = document.getElementById("tipo-entrega").value.includes("Entrega");
+      const statusEl = document.getElementById("frete-resultado");
+      if (!ehEntrega) return;
+
+      const endereco = document.getElementById("cliente-endereco").value.trim();
+      if (!endereco) {
+        freteCalculado = { calculado: false, disponivel: false, taxa: 0, distanciaKm: null, enderecoFormatado: "" };
+        statusEl.textContent = "";
+        atualizarTotal();
         return;
       }
 
-      const agora = new Date();
-      const horaFormatada = agora.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
-      const ehEntrega = tipo.includes('Entrega');
-      const statusLoja = verificarLojaAberta(agora);
+      statusEl.className = "frete-status";
+      statusEl.textContent = "Calculando distância e taxa de entrega...";
 
-      let mensagem = `Olá, gostaria de fazer um pedido:\n\n`;
-      mensagem += `*Pedido Cardápio Digital* - _${LOJA.nome.toUpperCase()}_\n`;
-      mensagem += `---------------------------------------\n\n`;
+      try {
+        const base = LOJA.apiUrl.trim().replace(/\/+$/, "");
+        const res = await fetch(`${base}/api/entrega/calcular`, {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ endereco })
+        });
+        const data = await res.json();
 
-      if (!statusLoja.aberta) {
-        mensagem += `⚠️ _Observação: pedido enviado com a loja fora do horário de atendimento (${statusLoja.texto})._\n\n`;
+        if (!res.ok) {
+          freteCalculado = { calculado: true, disponivel: false, taxa: 0, distanciaKm: null, enderecoFormatado: "" };
+          statusEl.className = "frete-status frete-erro";
+          statusEl.textContent = data.error || "Não foi possível calcular o frete para esse endereço.";
+          atualizarTotal();
+          return;
+        }
+
+        if (!data.disponivel) {
+          freteCalculado = { calculado: true, disponivel: false, taxa: 0, distanciaKm: data.distanciaKm, enderecoFormatado: data.endereco };
+          statusEl.className = "frete-status frete-erro";
+          statusEl.textContent = data.mensagem || `Fora do raio de ${LOJA.raioMaximoKm} km (${data.distanciaKm} km).`;
+          atualizarTotal();
+          return;
+        }
+
+        freteCalculado = {
+          calculado: true,
+          disponivel: true,
+          taxa: Number(data.taxa || 0),
+          distanciaKm: data.distanciaKm,
+          enderecoFormatado: data.endereco || endereco
+        };
+        statusEl.className = "frete-status";
+        statusEl.textContent = `Distância: ${data.distanciaKm} km • Taxa de entrega: ${formatarMoeda(freteCalculado.taxa)}`;
+        atualizarTotal();
+      } catch {
+        freteCalculado = { calculado: false, disponivel: false, taxa: 0, distanciaKm: null, enderecoFormatado: "" };
+        statusEl.className = "frete-status frete-erro";
+        statusEl.textContent = "Erro ao consultar o servidor de entrega.";
+        atualizarTotal();
+      }
+    }
+
+    function enviarWhatsApp() {
+      const nome = document.getElementById("cliente-nome").value.trim() || "Cliente";
+      const telefone = document.getElementById("cliente-telefone").value.trim() || "Não informado";
+      const tipo = document.getElementById("tipo-entrega").value;
+      const endereco = document.getElementById("cliente-endereco").value.trim();
+      const pagamento = document.getElementById("forma-pagamento").value;
+      const obs = document.getElementById("cliente-obs").value.trim();
+      const ehEntrega = tipo.includes("Entrega");
+
+      if (ehEntrega && !endereco) {
+        alert("Informe o endereço completo para entrega.");
+        return;
       }
 
-      let subtotal = 0;
+      const { subtotal } = calcularSubtotal();
+      const taxa = ehEntrega && freteCalculado.calculado && freteCalculado.disponivel ? freteCalculado.taxa : 0;
+      const totalGeral = subtotal + taxa;
+      const agora = new Date();
+      const horaFormatada = agora.toLocaleTimeString("pt-BR", { hour: "2-digit", minute: "2-digit" });
+      const statusLoja = verificarLojaAberta(agora);
+
+      let msg = `Olá, gostaria de fazer um pedido:\n\n`;
+      msg += `*Pedido Cardápio Digital* - _${LOJA.nome.toUpperCase()}_\n`;
+      msg += `---------------------------------------\n\n`;
+
+      if (!statusLoja.aberta) {
+        msg += `⚠️ _Observação: pedido enviado fora do horário (${statusLoja.texto})._\n\n`;
+      }
+
       produtos.forEach(p => {
-        const qtd = getQtdItem(p.id);
+        const qtd = getQtd(p.id);
+        if (qtd.pequeno > 0) {
+          const val = Number(p.tamanhos?.pequeno || 0) * qtd.pequeno;
+          msg += `*${qtd.pequeno}x ${p.nome} (PEQUENO) - ${formatarMoeda(val)}*\n`;
+        }
         if (qtd.medio > 0) {
-          const preco = p.tamanhos?.medio ?? 0;
-          const itemTotal = preco * qtd.medio;
-          subtotal += itemTotal;
-          mensagem += `*${qtd.medio}x ${p.nome.toUpperCase()} (MÉDIO) ${formatarMoeda(itemTotal)}*\n`;
+          const val = Number(p.tamanhos?.medio || 0) * qtd.medio;
+          msg += `*${qtd.medio}x ${p.nome} (MÉDIO) - ${formatarMoeda(val)}*\n`;
         }
         if (qtd.big > 0) {
-          const preco = p.tamanhos?.big ?? 0;
-          const itemTotal = preco * qtd.big;
-          subtotal += itemTotal;
-          mensagem += `*${qtd.big}x ${p.nome.toUpperCase()} (BIG) ${formatarMoeda(itemTotal)}*\n`;
+          const val = Number(p.tamanhos?.big || 0) * qtd.big;
+          msg += `*${qtd.big}x ${p.nome} (BIG) - ${formatarMoeda(val)}*\n`;
+        }
+        if (qtd.unico > 0) {
+          const unit = Number(p.precoUnico ?? p.tamanhos?.medio ?? 0);
+          msg += `*${qtd.unico}x ${p.nome} - ${formatarMoeda(unit * qtd.unico)}*\n`;
         }
       });
 
-      if (obs) {
-        mensagem += `- Obs: *${obs}*\n`;
-      }
+      if (obs) msg += `- Obs: *${obs}*\n`;
 
-      mensagem += `\n*Subtotal:* ${formatarMoeda(subtotal)}\n`;
+      msg += `\n*Subtotal:* ${formatarMoeda(subtotal)}\n`;
       if (ehEntrega) {
-        mensagem += `*Taxa de entrega*: a calcular (até ${LOJA.raioMaximoKm} km)\n`;
-        mensagem += `*Total: ${formatarMoeda(subtotal)}* (+ taxa de entrega)\n\n`;
+        if (freteCalculado.calculado && freteCalculado.disponivel) {
+          msg += `*Taxa de entrega (${freteCalculado.distanciaKm} km):* ${formatarMoeda(taxa)}\n`;
+        } else {
+          msg += `*Taxa de entrega:* a conferir\n`;
+        }
+        msg += `*Total:* ${formatarMoeda(totalGeral)}\n\n`;
       } else {
-        mensagem += `*Taxa de entrega*: R$ 0,00 (Retirada no local)\n`;
-        mensagem += `*Total: ${formatarMoeda(subtotal)}*\n\n`;
+        msg += `*Taxa de entrega:* R$ 0,00 (Retirada no local)\n`;
+        msg += `*Total:* ${formatarMoeda(subtotal)}\n\n`;
       }
 
-      mensagem += `---------------------------------------\n\n`;
+      msg += `---------------------------------------\n\n`;
+      msg += ehEntrega ? `*Tempo de entrega:* ${LOJA.tempoEntrega}\n\n` : `*Modalidade:* Retirada no Local\n\n`;
+      msg += `*${nome}* (${telefone})\n`;
+      msg += ehEntrega ? `${endereco}\n\n` : `${LOJA.enderecoCompleto}\n\n`;
+      msg += `*Pagamento:* ${pagamento}\n`;
+      msg += `_Gerado às ${horaFormatada}_`;
 
-      if (ehEntrega) {
-        mensagem += `*Tempo de entrega:* ${LOJA.tempoEntrega}\n\n`;
-      } else {
-        mensagem += `*Modalidade:* Retirada no Local\n\n`;
-      }
-
-      mensagem += `*${nome}*\n`;
-      mensagem += `${telefone}\n\n`;
-
-      if (ehEntrega) {
-        mensagem += `${endereco}\n`;
-        mensagem += `Porto Alegre/RS\n\n`;
-      } else {
-        mensagem += `${LOJA.enderecoCompleto}\n\n`;
-      }
-
-      mensagem += `*Pagamento:* ${pagamento}\n\n`;
-      mensagem += `_Pedido gerado pelo Cardápio Digital às ${horaFormatada}_`;
-
-      const url = `https://wa.me/${LOJA.whatsapp}?text=${encodeURIComponent(mensagem)}`;
-      window.open(url, '_blank');
+      window.open(`https://wa.me/${LOJA.whatsapp}?text=${encodeURIComponent(msg)}`, "_blank");
     }
 
     aplicarDadosLoja();
